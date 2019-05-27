@@ -1,4 +1,4 @@
-package com.playground.robo2d.core;
+package core.src.test.java.core;
 
 import static org.junit.Assert.assertTrue;
 

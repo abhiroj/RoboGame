@@ -1,4 +1,4 @@
-package com.playground.robo2d.core;
+package core.src.main.java.core;
 
 /**
  * Hello world!
