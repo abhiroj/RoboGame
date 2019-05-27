@@ -1,7 +1,7 @@
 package core.src.main.java.core.structure;
 
 import core.src.main.java.core.collection.Collectable;
-import core.src.main.java.core.collection.Repository;
+import core.src.main.java.core.repository.Repository;
 import core.src.main.java.core.props.weather.Weather;
 
 public class MarsGrid2D {
@@ -24,6 +24,6 @@ public class MarsGrid2D {
     }
 
     public void store(Collectable c) {
-
+    repository.store(c);
     }
 }

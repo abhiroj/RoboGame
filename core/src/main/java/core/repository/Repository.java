@@ -1,4 +1,6 @@
-package core.src.main.java.core.collection;
+package core.src.main.java.core.repository;
+
+import core.src.main.java.core.collection.Collectable;
 
 public interface Repository {
 
