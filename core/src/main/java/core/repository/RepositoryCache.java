@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryRepository implements Repository {
+public class RepositoryCache implements Repository {
 
     private List<Map<String, Object>> repo = new ArrayList<>();
 

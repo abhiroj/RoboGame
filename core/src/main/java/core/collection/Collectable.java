@@ -9,4 +9,5 @@ public interface Collectable {
      * @return
      */
     Map<String,Object> collect();
+
 }

@@ -1,4 +1,4 @@
-package core.src.main.java.core.props.weather;
+package core.src.main.java.core.properties.weather;
 
 public class Weather {
 
@@ -28,4 +28,11 @@ public class Weather {
         this.weatherType = weatherType;
     }
 
+    @Override
+    public String toString() {
+        return "Weather:{" +
+                "weather:'" + weather + '\'' +
+                ", weatherType:" + weatherType +
+                '}';
+    }
 }
