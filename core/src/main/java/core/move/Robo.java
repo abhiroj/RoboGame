@@ -14,15 +14,23 @@ public class Robo {
             this.delx = delx;
             this.dely = dely;
         }
+
+        public int getX() {
+            return delx;
+        }
+
+        public int getY() {
+            return dely;
+        }
     }
 
     private Direction primary = null;
     private Direction secondary = null;
 
-    private static final Direction LEFT = Direction.L;
-    private static final Direction RIGHT = Direction.R;
-    private static final Direction UP = Direction.U;
-    private static final Direction DOWN = Direction.D;
+    public static final Direction LEFT = Direction.L;
+    public static final Direction RIGHT = Direction.R;
+    public static final Direction UP = Direction.U;
+    public static final Direction DOWN = Direction.D;
 
     public void setPrimaryDirection(Direction d) {
         if (secondary != null && secondary.equals(d)) {

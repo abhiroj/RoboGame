@@ -1,11 +1,12 @@
 package core.src.main.java.core.structure;
 
-import core.src.main.java.core.action.Visitable;
-import core.src.main.java.core.collection.Collectable;
+import java.util.Map;
 
-/**
- * Semantic Square
- */
 public interface Square {
-
+    interface Coordinate {
+        /**
+         * @return Immutable map of coordinates
+         */
+        Map<Dimensional, Integer> getCoordinates();
+    }
 }

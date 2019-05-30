@@ -5,9 +5,15 @@ import java.util.Map;
 public interface Collectable {
 
     /**
-     * map of properties to be collected
+     * Determines whether the collectable can be collected or not
      * @return
      */
-    Map<String,Object> collect();
+    boolean isCollectable();
+
+    /**
+     * map of properties to be collected if the object is collectable
+     * @return
+     */
+    Map<String,Object> provide();
 
 }
