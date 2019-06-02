@@ -35,4 +35,10 @@ public class GameController implements Mediator {
         }
         return res;
     }
+
+    @Override
+    public boolean shouldMove(Coordinate coordinate) {
+        playground.checkBounds(coordinate);
+        return playground.isValid(coordinate);
+    }
 }

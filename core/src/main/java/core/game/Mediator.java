@@ -6,5 +6,5 @@ public interface Mediator {
 
     Map<String, Object> collect(Coordinate coordinate);
 
-
+    boolean shouldMove(Coordinate coordinate);
 }
