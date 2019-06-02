@@ -2,10 +2,13 @@
   <p>
   <ul>
   <li>
-  Create Class-Level Diagram for Game Engine.
+  Create Class-Level Diagram
   </li>
   <li>
-  Create module for Game Engine. 
+  Identify Packages
+  </li>
+  <li>
+  architecture of core lib
   </li>
   </ul>
   </p>
