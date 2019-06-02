@@ -1,8 +1,9 @@
 package core.src.main.java.core.game;
 
 import core.src.main.java.core.exception.AppException;
+import core.src.main.java.core.utilities.CoreUtils;
 
-class Coordinate {
+public class Coordinate {
 
     enum Type {
         TWOD("Two-Dimensional "), THREED("Three-Dimensional ");
@@ -56,4 +57,10 @@ class Coordinate {
         return dimension;
     }
 
+    @Override
+    public String toString() {
+        if (this.dimension.equals(Type.TWOD))
+            return CoreUtils.format("{},{}", x, y);
+        return CoreUtils.format("{},{},{} ", x, y, z);
+    }
 }
