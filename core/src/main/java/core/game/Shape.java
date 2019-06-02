@@ -1,5 +1,7 @@
 package core.src.main.java.core.game;
 
+import java.util.Map;
+
 interface Shape {
 
     enum PropType {
@@ -19,5 +21,7 @@ interface Shape {
     boolean canVisit();
 
     void markVisited();
+
+    Map<PropType, Object> collect();
 
 }
