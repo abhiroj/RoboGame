@@ -1,14 +1,20 @@
 package core.src.main.java.core.game;
 
+import core.src.main.java.core.exception.AppException;
+
 class Coordinate {
 
     enum Type {
-        TWOD("Two-Dimensional"), THREED("Three-Dimensional");
+        TWOD("Two-Dimensional "), THREED("Three-Dimensional ");
 
         private String s;
 
         Type(String s) {
             this.s = s;
+        }
+
+        public String valueOf() {
+            return s;
         }
 
     }
@@ -29,6 +35,25 @@ class Coordinate {
         this.y = y;
         this.z = z;
         this.dimension = Type.THREED;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public int getZ() {
+        if (!this.dimension.equals(Type.THREED)) {
+            throw new AppException("Z-Axis not supported by " + this.dimension.valueOf());
+        }
+        return this.z;
+    }
+
+    public Type getDimensionType() {
+        return dimension;
     }
 
 }
