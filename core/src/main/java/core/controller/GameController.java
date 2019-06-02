@@ -28,7 +28,7 @@ public class GameController implements Mediator {
 
     @Override
     public Map<String, Object> collect(Coordinate coordinate) {
-        Map<Object, Object> collection = playground.collect(coordinate);
+        Map<Object, Object> collection = playground.collectable(coordinate);
         Map<String, Object> res = new HashMap<>();
         for (Map.Entry e : collection.entrySet()) {
             res.put(e.getKey().toString(), e.getValue());
