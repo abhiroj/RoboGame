@@ -1,9 +1,12 @@
 package core.src.main.java.core.controller;
 
-import core.src.main.java.core.game.Playground;
-import core.src.main.java.core.game.PlaygroundFactory;
+import core.src.main.java.core.game.*;
 
-public class GameController {
+import java.util.HashMap;
+import java.util.Map;
+
+//TODO: Create an abstract game controller, this one focuses more towards 2D game
+public class GameController implements Mediator {
 
     Playground playground;
 
@@ -13,10 +16,23 @@ public class GameController {
         System.out.println("Constructed 2D Game");
     }
 
-    public void create3DGame(int x, int y, int z) {
-        System.out.println("Feature coming soon...");
+    public void deploy(int x, int y) {
+        Rover rover = RoverFactory.getInstance().request2DRover(x, y);
+        rover.setMediator(this);
+        playground.deploy(rover);
     }
 
+    public void demobilize(int id) {
 
+    }
 
+    @Override
+    public Map<String, Object> collect(Coordinate coordinate) {
+        Map<Object, Object> collection = playground.collect(coordinate);
+        Map<String, Object> res = new HashMap<>();
+        for (Map.Entry e : collection.entrySet()) {
+            res.put(e.getKey().toString(), e.getValue());
+        }
+        return res;
+    }
 }
