@@ -60,7 +60,7 @@ public class Coordinate {
     @Override
     public String toString() {
         if (this.dimension.equals(Type.TWOD))
-            return CoreUtils.format("{},{}", x, y);
-        return CoreUtils.format("{},{},{} ", x, y, z);
+            return CoreUtils.format("{0},{1}", x, y);
+        return CoreUtils.format("{0},{1},{2} ", x, y, z);
     }
 }
