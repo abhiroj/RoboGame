@@ -10,4 +10,7 @@ public interface Playground {
 
     Map<Object, Object> collectable(Coordinate coordinate);
 
+    void checkBounds(Coordinate coordinate);
+
+    boolean isValid(Coordinate coordinate);
 }

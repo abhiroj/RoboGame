@@ -15,20 +15,16 @@ class Playground2D implements Playground {
         this.dimen_x = dimen_x;
         this.dimen_y = dimen_y;
         square2D = new Square2D[this.dimen_x][this.dimen_y];
+        for (int i = 0; i < dimen_x; i++) {
+            for (int j = 0; j < dimen_y; j++) {
+                square2D[i][j] = new Square2D(i, j);
+            }
+        }
     }
 
     @Override
     public void deploy(Rover rover) {
-        checkDimension(rover.getCoordinate().getDimensionType());
-        checkBounds(rover.getCoordinate());
-        checkDeploymentAvailable(rover.getCoordinate());
         rover.move();
-    }
-
-    private void checkDeploymentAvailable(Coordinate coordinate) {
-        if (!square2D[coordinate.getX()][coordinate.getY()].canVisit()) {
-            throw new AppException(coordinate.toString() + " Shape is already visited. Choose a new version next time");
-        }
     }
 
     @Override
@@ -38,7 +34,6 @@ class Playground2D implements Playground {
 
     @Override
     public Map<Object, Object> collectable(Coordinate coordinate) {
-        checkBounds(coordinate);
         Map<Shape.PropType, Object> map = square2D[coordinate.getX()][coordinate.getY()].collect();
         Map<Object, Object> res = new HashMap<>();
         for (Map.Entry e : map.entrySet()) {
@@ -49,15 +44,18 @@ class Playground2D implements Playground {
         return res;
     }
 
-    private void checkDimension(Coordinate.Type dimensionType) {
-        if (!dimensionType.equals(Coordinate.Type.TWOD)) {
-            throw new AppException("Cannot deploy " + dimensionType.valueOf() + " Rover on a Two-Dimensional Playground");
+    @Override
+    public void checkBounds(Coordinate coordinate) {
+        if (!coordinate.getDimensionType().equals(Coordinate.Type.TWOD)) {
+            throw new AppException("Cannot deploy " + coordinate.getDimensionType().valueOf() + " Rover on a Two-Dimensional Playground");
         }
-    }
-
-    private void checkBounds(Coordinate coordinate) {
         if (coordinate.getX() < 0 || coordinate.getX() >= dimen_x || coordinate.getY() < 0 || coordinate.getY() >= dimen_y) {
             throw new AppException("Out of Bounds request can not be fulfilled");
         }
+    }
+
+    @Override
+    public boolean isValid(Coordinate coordinate) {
+        return !square2D[coordinate.getX()][coordinate.getY()].canVisit();
     }
 }
