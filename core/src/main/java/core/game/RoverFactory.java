@@ -2,7 +2,7 @@ package core.src.main.java.core.game;
 
 public class RoverFactory {
 
-    public static RoverFactory instance = null;
+    private static RoverFactory instance = null;
     private int rover_count = 0;
 
     private RoverFactory() {
@@ -16,8 +16,8 @@ public class RoverFactory {
         return instance;
     }
 
-    public Rover request2DRover(int x, int y) {
-        Rover rover = new Rover(rover_count++);
+    public RoverImpl request2DRover(int x, int y) {
+        RoverImpl rover = new RoverImpl(rover_count++);
         rover.setCoordinates(new Coordinate(x,y));
         return rover;
     }
