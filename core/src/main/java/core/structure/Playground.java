@@ -14,7 +14,7 @@ public interface Playground {
         Map<Dimensional, Integer> getBounds();
     }
 
-    void deploy(Rover rover);
+    void deploy(Rover rover, int x, int y);
 
     void demobilize(Rover rover);
 

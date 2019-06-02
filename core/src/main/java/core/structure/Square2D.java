@@ -1,33 +1,20 @@
 package core.src.main.java.core.structure;
 
+import core.src.main.java.core.collection.Collectable;
 import core.src.main.java.core.exception.AppException;
 
 import java.util.Map;
 
-public class Square2D implements Square {
+public class Square2D implements Shape, Collectable {
 
-    private final Coordinate coordinate;
     private boolean isVisited;
+    private final int x;
+    private final int y;
 
-    private static class Coordinate implements Square.Coordinate {
-
-        private final int x;
-        private final int y;
-
-        Coordinate(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public Map<Dimensional, Integer> getCoordinates() {
-            return Map.of(Dimensional.X, x, Dimensional.Y, y);
-        }
-    }
-
-    public Square2D(int locX, int locY) {
-        this.coordinate = new Coordinate(locX, locY);
+    public Square2D(int x, int y) {
         isVisited = false;
+        this.x = x;
+        this.y = y;
     }
 
     public boolean canVisit() {
@@ -36,9 +23,18 @@ public class Square2D implements Square {
 
     public void markVisit() {
         if (canVisit()) {
-            throw new AppException(this.coordinate.getCoordinates().toString() + " square is already visited");
+            throw new AppException(x + "," + y + " square is already visited");
         }
         isVisited = true;
     }
 
+    @Override
+    public boolean isCollectable() {
+        return true;
+    }
+
+    @Override
+    public Map<String, Object> provide() {
+        return null;
+    }
 }
