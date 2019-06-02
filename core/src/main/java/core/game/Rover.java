@@ -1,37 +1,15 @@
 package core.src.main.java.core.game;
 
-class Rover implements AbstractRover, Runnable {
+public interface Rover {
 
-    private Coordinate coordinate;
-    private final int id;
-    private final int INTERVAL_IN_MILLIS = 2000;
+    int getId();
 
-    Rover(int id) {
-        this.id = id;
-    }
+    void move();
 
-    @Override
-    public int getId() {
-        return id;
-    }
+    void stop();
 
-    @Override
-    public void move() {
+    void setCoordinates(Coordinate coordinates);
 
-    }
+    Coordinate getCoordinate();
 
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
-    public void setCoordinates(Coordinate coordinate) {
-        this.coordinate = coordinate;
-    }
-
-    @Override
-    public void run() {
-
-    }
 }
