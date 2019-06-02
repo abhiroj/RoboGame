@@ -1,4 +1,4 @@
-package core.src.main.java.core.api;
+package core.src.main.java.core.game;
 
 import java.util.Map;
 

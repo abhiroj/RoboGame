@@ -37,7 +37,7 @@ class Playground2D implements Playground {
     }
 
     @Override
-    public Map<Object, Object> collect(Coordinate coordinate) {
+    public Map<Object, Object> collectable(Coordinate coordinate) {
         checkBounds(coordinate);
         Map<Shape.PropType, Object> map = square2D[coordinate.getX()][coordinate.getY()].collect();
         Map<Object, Object> res = new HashMap<>();
