@@ -1,6 +1,6 @@
 package core.src.main.java.core.game;
 
-public interface Square {
+interface Shape {
 
     enum PropType {
         WEATHER("Weather"), HUMIDITY("Humidity"), UVRAD("UV Index");
