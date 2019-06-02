@@ -1,4 +1,4 @@
-package core.src.main.java.core.game.square;
+package core.src.main.java.core.game;
 
 public interface Square {
 
@@ -15,5 +15,9 @@ public interface Square {
             return prop;
         }
     }
+
+    boolean canVisit();
+
+    void markVisited();
 
 }
