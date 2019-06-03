@@ -1,7 +1,5 @@
 package core.src.main.java.core.game;
 
-import java.util.Map;
-
 public interface Rover {
 
     /**
@@ -40,6 +38,6 @@ public interface Rover {
      */
     void dump();
 
-    void setMediator(Mediator mediator);
+    void setMessageHandler(MessageHandler handler);
 
 }

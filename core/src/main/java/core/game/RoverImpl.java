@@ -8,7 +8,7 @@ import java.util.Map;
 
 class RoverImpl implements Rover, Runnable {
 
-    private Mediator mediator;
+    private MessageHandler handler;
     private Coordinate coordinate;
     private final int id;
     private final int INTERVAL_IN_MILLIS = 2000;
@@ -54,16 +54,16 @@ class RoverImpl implements Rover, Runnable {
     }
 
     @Override
-    public void setMediator(Mediator mediator) {
-        this.mediator = mediator;
+    public void setMessageHandler(MessageHandler handler) {
+        this.handler = handler;
     }
 
     @Override
     public void run() {
-        mediator.shouldMove(coordinate);
+        handler.shouldMove(coordinate);
         System.out.println(Thread.currentThread().getName() + " successfully deployed!");
         while (true) {
-            repository.add(mediator.collect(coordinate));
+            repository.add(handler.collect(coordinate));
             System.out.println("Collection made at " + coordinate.toString());
             try {
                 Thread.sleep(INTERVAL_IN_MILLIS);
@@ -71,7 +71,7 @@ class RoverImpl implements Rover, Runnable {
                 e.printStackTrace();
             }
             coordinate = new Coordinate(coordinate.getX() + 1, coordinate.getY());
-            mediator.shouldMove(coordinate);
+            handler.shouldMove(coordinate);
         }
     }
 }

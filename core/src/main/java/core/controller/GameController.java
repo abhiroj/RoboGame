@@ -6,9 +6,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 //TODO: Create an abstract game controller, this one focuses more towards 2D game
-public class GameController implements Mediator {
+public class GameController {
 
     Playground playground;
+    MessageHandler messageHandler;
+
+    public GameController() {
+        messageHandler = (MessageHandler) this;
+    }
+
+    public GameController(MessageHandler messageHandler) {
+        this.messageHandler = messageHandler;
+    }
 
     public void create2DGame(int x, int y) {
         System.out.println("Constructing 2D Game...");
@@ -18,7 +27,7 @@ public class GameController implements Mediator {
 
     public void deploy(int x, int y) {
         Rover rover = RoverFactory.getInstance().request2DRover(x, y);
-        rover.setMediator(this);
+        rover.setMessageHandler(messageHandler);
         playground.deploy(rover);
     }
 
@@ -26,7 +35,6 @@ public class GameController implements Mediator {
 
     }
 
-    @Override
     public Map<String, Object> collect(Coordinate coordinate) {
         Map<Object, Object> collection = playground.collectable(coordinate);
         Map<String, Object> res = new HashMap<>();
@@ -36,7 +44,6 @@ public class GameController implements Mediator {
         return res;
     }
 
-    @Override
     public boolean shouldMove(Coordinate coordinate) {
         playground.checkBounds(coordinate);
         return playground.isValid(coordinate);
