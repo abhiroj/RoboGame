@@ -2,6 +2,20 @@ package core.src.main.java.core.game;
 
 public interface Rover {
 
+    enum Direction {
+        UP(new Coordinate(0, 1)), DOWN(new Coordinate(0, -1)), LEFT(new Coordinate(-1, 0)), RIGHT(new Coordinate(1, 0));
+
+        private Coordinate diff;
+
+        Direction(Coordinate coordinate) {
+            this.diff = coordinate;
+        }
+
+        public Coordinate getDiff() {
+            return this.diff;
+        }
+    }
+
     /**
      * Get Rover's ID assigned by factory
      *
@@ -39,5 +53,9 @@ public interface Rover {
     void dump();
 
     void setMessageHandler(MessageHandler handler);
+
+    void setPrimaryDirection(Direction direction);
+
+    void setSecondaryDirection(Direction direction);
 
 }

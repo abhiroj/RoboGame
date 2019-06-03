@@ -12,10 +12,16 @@ class RoverImpl implements Rover, Runnable {
     private Coordinate coordinate;
     private final int id;
     private final int INTERVAL_IN_MILLIS = 2000;
+    private final int NEXT_MOVE_THRESHOLD_TIME = 5000;
     private List<Map<String, Object>> repository;
+
+    private Direction PRIMARY;
+    private Direction SECONDARY;
 
     RoverImpl(int id) {
         this.id = id;
+        PRIMARY = Direction.UP;
+        SECONDARY = Direction.LEFT;
         repository = new ArrayList<>();
     }
 
@@ -59,6 +65,16 @@ class RoverImpl implements Rover, Runnable {
     }
 
     @Override
+    public void setPrimaryDirection(Direction direction) {
+        PRIMARY = direction;
+    }
+
+    @Override
+    public void setSecondaryDirection(Direction direction) {
+        SECONDARY = direction;
+    }
+
+    @Override
     public void run() {
         handler.shouldMove(coordinate);
         System.out.println(Thread.currentThread().getName() + " successfully deployed!");
@@ -70,8 +86,6 @@ class RoverImpl implements Rover, Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            coordinate = new Coordinate(coordinate.getX() + 1, coordinate.getY());
-            handler.shouldMove(coordinate);
         }
     }
 }
