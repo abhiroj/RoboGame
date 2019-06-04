@@ -12,8 +12,10 @@ class RoverImpl implements Rover, Runnable {
     private Coordinate coordinate;
     private final int id;
     private final int INTERVAL_IN_MILLIS = 2000;
-    private final int NEXT_MOVE_THRESHOLD_TIME = 5000;
+    private final long NEXT_MOVE_THRESHOLD_TIME = 5000;
     private List<Map<String, Object>> repository;
+    private final int FAILURE_COUNTER = 4;
+    private boolean shouldRun = false;
 
     private Direction PRIMARY;
     private Direction SECONDARY;
@@ -21,7 +23,7 @@ class RoverImpl implements Rover, Runnable {
     RoverImpl(int id) {
         this.id = id;
         PRIMARY = Direction.UP;
-        SECONDARY = Direction.LEFT;
+        SECONDARY = Direction.RIGHT;
         repository = new ArrayList<>();
     }
 
@@ -32,12 +34,15 @@ class RoverImpl implements Rover, Runnable {
 
     @Override
     public void move() {
+        shouldRun = true;
+        System.out.println("EVERYBODY BUCKLE UP, PLEASE!".toLowerCase());
         new Thread(this, "Rover " + id).start();
     }
 
     @Override
     public void stop() {
-
+        System.out.println("Pulling Aside!");
+        shouldRun = false;
     }
 
     @Override
@@ -78,13 +83,22 @@ class RoverImpl implements Rover, Runnable {
     public void run() {
         handler.shouldMove(coordinate);
         System.out.println(Thread.currentThread().getName() + " successfully deployed!");
-        while (true) {
+        while (shouldRun) {
             repository.add(handler.collect(coordinate));
             System.out.println("Collection made at " + coordinate.toString());
             try {
                 Thread.sleep(INTERVAL_IN_MILLIS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+            Coordinate primary = new Coordinate(coordinate.getX() + PRIMARY.getDiff().getX(), coordinate.getY() + PRIMARY.getDiff().getY());
+            Coordinate secondary = new Coordinate(0 + SECONDARY.getDiff().getX(), 0 + SECONDARY.getDiff().getY());
+            if (handler.shouldMove(primary)) {
+                coordinate = primary;
+            } else if (handler.shouldMove(secondary)) {
+                coordinate = secondary;
+            } else {
+                handler.requestDemobilization(this);
             }
         }
     }

@@ -3,9 +3,9 @@ package core.src.main.java.core.game;
 public interface Rover {
 
     enum Direction {
-        UP(new Coordinate(0, 1)), DOWN(new Coordinate(0, -1)), LEFT(new Coordinate(-1, 0)), RIGHT(new Coordinate(1, 0));
+        DOWN(new Coordinate(0, 1)), UP(new Coordinate(0, -1)), LEFT(new Coordinate(-1, 0)), RIGHT(new Coordinate(1, 0));
 
-        private Coordinate diff;
+        private final Coordinate diff;
 
         Direction(Coordinate coordinate) {
             this.diff = coordinate;

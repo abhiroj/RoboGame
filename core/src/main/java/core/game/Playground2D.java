@@ -29,7 +29,8 @@ class Playground2D implements Playground {
 
     @Override
     public void demobilize(Rover rover) {
-
+        System.out.println(rover.getId() + " requesting demobilization!");
+        rover.stop();
     }
 
     @Override
@@ -41,6 +42,7 @@ class Playground2D implements Playground {
             Object val = e.getValue();
             res.put(s, val);
         }
+        square2D[coordinate.getX()][coordinate.getY()].markVisited();
         return res;
     }
 
@@ -56,6 +58,6 @@ class Playground2D implements Playground {
 
     @Override
     public boolean isValid(Coordinate coordinate) {
-        return !square2D[coordinate.getX()][coordinate.getY()].canVisit();
+        return square2D[coordinate.getX()][coordinate.getY()].canVisit();
     }
 }
