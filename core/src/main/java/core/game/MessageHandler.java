@@ -7,4 +7,6 @@ public interface MessageHandler {
     Map<String, Object> collect(Coordinate coordinate);
 
     boolean shouldMove(Coordinate coordinate);
+
+    void requestDemobilization(Rover rover);
 }

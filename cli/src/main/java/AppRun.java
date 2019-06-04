@@ -6,7 +6,6 @@ public class AppRun {
         GameController gameController = new GameController();
         gameController.create2DGame(20, 20);
         gameController.deploy(5, 5);
-        gameController.deploy(10, 14);
     }
 
 }

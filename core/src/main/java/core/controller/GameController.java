@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 //TODO: Create an abstract game controller, this one focuses more towards 2D game
-public class GameController {
+public class GameController implements MessageHandler {
 
     Playground playground;
     MessageHandler messageHandler;
 
     public GameController() {
-        messageHandler = (MessageHandler) this;
+        messageHandler=this;
     }
 
     public GameController(MessageHandler messageHandler) {
@@ -47,5 +47,10 @@ public class GameController {
     public boolean shouldMove(Coordinate coordinate) {
         playground.checkBounds(coordinate);
         return playground.isValid(coordinate);
+    }
+
+    @Override
+    public void requestDemobilization(Rover rover) {
+        playground.demobilize(rover);
     }
 }
