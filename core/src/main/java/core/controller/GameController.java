@@ -20,4 +20,8 @@ public interface GameController {
 
     Map<String, Object> collect(Coordinate coordinate);
 
+    void pause();
+
+    void resume();
+
 }
