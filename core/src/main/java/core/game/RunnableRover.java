@@ -17,13 +17,8 @@ class RunnableRover implements Rover, Runnable {
     private final int FAILURE_COUNTER = 4;
     private boolean shouldRun = false;
 
-    private Direction PRIMARY;
-    private Direction SECONDARY;
-
     RunnableRover(int id) {
         this.id = id;
-        PRIMARY = Direction.UP;
-        SECONDARY = Direction.RIGHT;
         repository = new ArrayList<>();
     }
 
@@ -70,16 +65,6 @@ class RunnableRover implements Rover, Runnable {
     }
 
     @Override
-    public void setPrimaryDirection(Direction direction) {
-        PRIMARY = direction;
-    }
-
-    @Override
-    public void setSecondaryDirection(Direction direction) {
-        SECONDARY = direction;
-    }
-
-    @Override
     public void run() {
         handler.shouldMove(coordinate);
         System.out.println(Thread.currentThread().getName() + " successfully deployed!");
@@ -90,15 +75,6 @@ class RunnableRover implements Rover, Runnable {
                 Thread.sleep(INTERVAL_IN_MILLIS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-            Coordinate primary = new Coordinate(coordinate.getX() + PRIMARY.getDiff().getX(), coordinate.getY() + PRIMARY.getDiff().getY());
-            Coordinate secondary = new Coordinate(0 + SECONDARY.getDiff().getX(), 0 + SECONDARY.getDiff().getY());
-            if (handler.shouldMove(primary)) {
-                coordinate = primary;
-            } else if (handler.shouldMove(secondary)) {
-                coordinate = secondary;
-            } else {
-                handler.requestDemobilization(this);
             }
         }
     }

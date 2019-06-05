@@ -3,13 +3,13 @@ package core.src.main.java.core.game;
 import java.util.HashMap;
 import java.util.Map;
 
-class Square2D implements Shape {
+class Square implements Shape {
 
     private Map<PropType, Object> propTypeObjectMap;
     private Coordinate coordinate;
     private boolean visited;
 
-    Square2D(Coordinate coordinate) {
+    Square(Coordinate coordinate) {
         this.coordinate = coordinate;
         visited = false;
         propTypeObjectMap = new HashMap<>();
@@ -25,6 +25,8 @@ class Square2D implements Shape {
 
     @Override
     public Coordinate getCoordinate() {
-        return new Coordinate(coordinate.getX(), coordinate.getY());
+        if (coordinate.getDimensionType() == Coordinate.Type.TWOD)
+            return new Coordinate(coordinate.getX(), coordinate.getY());
+        return new Coordinate(coordinate.getX(), coordinate.getY(), coordinate.getZ());
     }
 }
