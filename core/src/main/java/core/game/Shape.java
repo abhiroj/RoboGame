@@ -18,10 +18,8 @@ interface Shape {
         }
     }
 
-    boolean canVisit();
+    Map<PropType, Object> getProperties();
 
-    void markVisited();
-
-    Map<PropType, Object> collect();
+    Coordinate getCoordinate();
 
 }

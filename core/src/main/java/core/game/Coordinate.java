@@ -58,6 +58,31 @@ public class Coordinate {
     }
 
     @Override
+    public int hashCode() {
+        if (this.dimension.equals(Type.TWOD)) {
+            int var1 = x * 10 + y;
+            return var1;
+        }
+        return x * 100 + y * 10 + z;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Coordinate)) {
+            return false;
+        }
+        Coordinate c = (Coordinate) obj;
+        if (this.dimension.equals(Type.TWOD)) {
+            int var1 = x * 10 + y;
+            int var2 = c.getX() * 10 + c.getY();
+            return var1 == var2;
+        }
+        int var1 = x * 100 + y * 10 + z;
+        int var2 = x * 100 + y * 10 + z;
+        return var1 == var2;
+    }
+
+    @Override
     public String toString() {
         if (this.dimension.equals(Type.TWOD))
             return CoreUtils.format("{0},{1}", x, y);

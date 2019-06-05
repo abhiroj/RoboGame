@@ -11,8 +11,8 @@ public class PlaygroundFactory {
 
     }
 
-    public Playground get2DPlayground(int x, int y) {
-        return new Playground2D(x, y);
+    public Playground get2DPlayground(Shape[][] shape2D) {
+        return new Playground2D(shape2D);
     }
 
     public static PlaygroundFactory getInstance() {

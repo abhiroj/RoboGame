@@ -1,16 +1,13 @@
 package core.src.main.java.core.game;
 
-import java.util.Map;
+import java.util.List;
 
 public interface Playground {
 
-    void deploy(Rover rover);
+    List<Coordinate> getDimensions();
 
-    void demobilize(Rover rover);
+    Coordinate.Type getDimensionType();
 
-    Map<Object, Object> collectable(Coordinate coordinate);
+    Shape getShapeAtCoordinate(Coordinate c);
 
-    void checkBounds(Coordinate coordinate);
-
-    boolean isValid(Coordinate coordinate);
 }

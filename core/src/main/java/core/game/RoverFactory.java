@@ -16,9 +16,9 @@ public class RoverFactory {
         return instance;
     }
 
-    public Rover request2DRover(int x, int y) {
-        Rover rover = new RoverImpl(rover_count++);
-        rover.setStartingCoordinate(new Coordinate(x, y));
+    public Rover requestRunnableRover(Coordinate coordinate) {
+        Rover rover = new RunnableRover(++rover_count);
+        rover.setStartingCoordinate(coordinate);
         return rover;
     }
 

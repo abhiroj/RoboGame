@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class RoverImpl implements Rover, Runnable {
+class RunnableRover implements Rover, Runnable {
 
-    private MessageHandler handler;
+    private EventHandler handler;
     private Coordinate coordinate;
     private final int id;
     private final int INTERVAL_IN_MILLIS = 2000;
@@ -20,7 +20,7 @@ class RoverImpl implements Rover, Runnable {
     private Direction PRIMARY;
     private Direction SECONDARY;
 
-    RoverImpl(int id) {
+    RunnableRover(int id) {
         this.id = id;
         PRIMARY = Direction.UP;
         SECONDARY = Direction.RIGHT;
@@ -54,7 +54,7 @@ class RoverImpl implements Rover, Runnable {
     }
 
     @Override
-    public Coordinate getCoordinate() {
+    public Coordinate getCurrentCoordinate() {
         return coordinate;
     }
 
@@ -65,7 +65,7 @@ class RoverImpl implements Rover, Runnable {
     }
 
     @Override
-    public void setMessageHandler(MessageHandler handler) {
+    public void setEventHandler(EventHandler handler) {
         this.handler = handler;
     }
 
