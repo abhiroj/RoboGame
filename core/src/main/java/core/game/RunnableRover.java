@@ -1,5 +1,6 @@
 package core.src.main.java.core.game;
 
+import core.src.main.java.core.controller.GameController;
 import core.src.main.java.core.exception.AppException;
 
 import java.util.ArrayList;
@@ -8,7 +9,6 @@ import java.util.Map;
 
 class RunnableRover implements Rover, Runnable {
 
-    private EventHandler handler;
     private Coordinate coordinate;
     private final int id;
     private final int INTERVAL_IN_MILLIS = 2000;
@@ -16,6 +16,7 @@ class RunnableRover implements Rover, Runnable {
     private List<Map<String, Object>> repository;
     private final int FAILURE_COUNTER = 4;
     private boolean shouldRun = false;
+    private GameController controller;
 
     RunnableRover(int id) {
         this.id = id;
@@ -60,16 +61,17 @@ class RunnableRover implements Rover, Runnable {
     }
 
     @Override
-    public void setEventHandler(EventHandler handler) {
-        this.handler = handler;
+    public void setGameController(GameController handler) {
+        this.controller = handler;
     }
+
 
     @Override
     public void run() {
-        handler.shouldMove(coordinate);
+        controller.shouldMove(this);
         System.out.println(Thread.currentThread().getName() + " successfully deployed!");
         while (shouldRun) {
-            repository.add(handler.collect(coordinate));
+            repository.add(controller.collect(coordinate));
             System.out.println("Collection made at " + coordinate.toString());
             try {
                 Thread.sleep(INTERVAL_IN_MILLIS);

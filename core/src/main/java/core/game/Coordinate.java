@@ -25,13 +25,13 @@ public class Coordinate {
     private int z;
     private Type dimension;
 
-    Coordinate(int x, int y) {
+    public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
         this.dimension = Type.TWOD;
     }
 
-    Coordinate(int x, int y, int z) {
+    public Coordinate(int x, int y, int z) {
         this.x = x;
         this.y = y;
         this.z = z;

@@ -1,5 +1,7 @@
 package core.src.main.java.core.game;
 
+import core.src.main.java.core.controller.GameController;
+
 public interface Rover {
 
     int getId();
@@ -14,6 +16,6 @@ public interface Rover {
 
     void dump();
 
-    void setEventHandler(EventHandler handler);
+    void setGameController(GameController handler);
 
 }
