@@ -4,7 +4,11 @@ import java.util.List;
 
 public interface Playground {
 
-    List<Coordinate> getDimensions();
+    /**
+     *
+     * @return
+     */
+    List<Coordinate> getCoordinateBounds();
 
     Coordinate.Type getDimensionType();
 

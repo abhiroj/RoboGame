@@ -14,7 +14,7 @@ class Playground2D implements Playground {
     }
 
     @Override
-    public List<Coordinate> getDimensions() {
+    public List<Coordinate> getCoordinateBounds() {
         List<Coordinate> originCoordinate = new ArrayList<>();
         originCoordinate.add(shape2D[0][0].getCoordinate());
         originCoordinate.add(shape2D[shape2D.length - 1][shape2D[0].length - 1].getCoordinate());

@@ -3,7 +3,9 @@ package core.src.main.java.core.game;
 import core.src.main.java.core.exception.AppException;
 import core.src.main.java.core.utilities.CoreUtils;
 
-public class Coordinate {
+import java.util.InputMismatchException;
+
+public class Coordinate implements Comparable<Coordinate> {
 
     enum Type {
         TWOD("Two-Dimensional "), THREED("Three-Dimensional ");
@@ -88,4 +90,34 @@ public class Coordinate {
             return CoreUtils.format("{0},{1}", x, y);
         return CoreUtils.format("{0},{1},{2} ", x, y, z);
     }
+
+    public boolean lessThan(Coordinate c) {
+        if (this.getDimensionType() != c.getDimensionType()) {
+            throw new AppException("Can't compare oranges with apples", new InputMismatchException());
+        }
+        return (getDimensionType() == Type.THREED)?this.getX() < c.getX() && this.getY() < c.getY() && this.getZ() < c.getZ() : this.getX() < c.getX() && this.getY() < c.getY();
+    }
+
+    public boolean greaterThan(Coordinate c) {
+        if (this.getDimensionType() != c.getDimensionType()) {
+            throw new AppException("Can't compare oranges with apples", new InputMismatchException());
+        }
+        return (getDimensionType() == Type.THREED)?this.getX() > c.getX() && this.getY() > c.getY() && this.getZ() > c.getZ() : this.getX() > c.getX() && this.getY() > c.getY();
+    }
+
+    public boolean equalTo(Coordinate c) {
+        if (this.getDimensionType() != c.getDimensionType()) {
+            throw new AppException("Can't compare oranges with apples", new InputMismatchException());
+        }
+        return this.getX() == c.getX() && this.getY() == c.getY() && (getDimensionType() == Type.THREED) ? this.getZ() == c.getZ() : true;
+    }
+
+    @Override
+    public int compareTo(Coordinate o) {
+        if (lessThan(o)) return -1;
+        if (greaterThan(o)) return 1;
+        return 0;
+    }
+
+
 }

@@ -9,7 +9,7 @@ public class SquareFactory extends ShapeFactory {
         Shape[][] shape2D = new Square[x][y];
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                shape2D[i][j] = new Square(new Coordinate(x, y));
+                shape2D[i][j] = new Square(new Coordinate(i, j));
             }
         }
         return shape2D;

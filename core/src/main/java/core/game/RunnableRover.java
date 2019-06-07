@@ -11,12 +11,10 @@ class RunnableRover implements Rover, Runnable {
 
     private Coordinate coordinate;
     private final int id;
-    private final int INTERVAL_IN_MILLIS = 2000;
-    private final long NEXT_MOVE_THRESHOLD_TIME = 5000;
     private List<Map<String, Object>> repository;
-    private final int FAILURE_COUNTER = 4;
     private boolean shouldRun = false;
     private GameController controller;
+    private boolean activate = false;
 
     RunnableRover(int id) {
         this.id = id;
@@ -29,24 +27,39 @@ class RunnableRover implements Rover, Runnable {
     }
 
     @Override
-    public void move() {
+    public void activate() {
+        if (activate) {
+            throw new AppException(this.toString() + " can not be activated again");
+        }
+        activate = true;
         shouldRun = true;
-        System.out.println("EVERYBODY BUCKLE UP, PLEASE!".toLowerCase());
-        new Thread(this, "Rover " + id).start();
+        System.out.println("everybody, buckle up please!" + this.toString() + " on the move.");
+        new Thread(this, this.toString()).start();
+    }
+
+    @Override
+    public void move() {
+        while (coordinate == null) {
+            System.out.println("Not valid coordinates ");
+            System.out.println(this.toString() + " waiting for valid coordinates");
+            try {
+                Thread.currentThread().sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("Visited " + coordinate.toString() +"by "+this.toString());
+        coordinate = controller.nextMove(coordinate);
     }
 
     @Override
     public void stop() {
+        if(!activate){
+            System.out.println("can not stop a rover not activated!");
+            return;
+        }
         System.out.println("Pulling Aside!");
         shouldRun = false;
-    }
-
-    @Override
-    public void setStartingCoordinate(Coordinate coordinate) {
-        if (this.coordinate != null) {
-            throw new AppException("can not set coordinates while in operation");
-        }
-        this.coordinate = coordinate;
     }
 
     @Override
@@ -65,19 +78,25 @@ class RunnableRover implements Rover, Runnable {
         this.controller = handler;
     }
 
+    @Override
+    public void setCoordinate(Coordinate coordinate) {
+        if(this.coordinate==null){
+            this.coordinate=coordinate;
+        }else{
+            throw new AppException("Coordinate already present");
+        }
+    }
+
 
     @Override
     public void run() {
-        controller.shouldMove(this);
-        System.out.println(Thread.currentThread().getName() + " successfully deployed!");
         while (shouldRun) {
-            repository.add(controller.collect(coordinate));
-            System.out.println("Collection made at " + coordinate.toString());
-            try {
-                Thread.sleep(INTERVAL_IN_MILLIS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            move();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Rover " + this.getId();
     }
 }
