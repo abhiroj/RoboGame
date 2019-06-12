@@ -7,7 +7,7 @@ import java.util.InputMismatchException;
 
 public class Coordinate implements Comparable<Coordinate> {
 
-    enum Type {
+    public enum Type {
         TWOD("Two-Dimensional "), THREED("Three-Dimensional ");
 
         private String s;
@@ -87,29 +87,29 @@ public class Coordinate implements Comparable<Coordinate> {
     @Override
     public String toString() {
         if (this.dimension.equals(Type.TWOD))
-            return CoreUtils.format("{0},{1}", x, y);
-        return CoreUtils.format("{0},{1},{2} ", x, y, z);
+            return CoreUtils.format("x:{0} y:{1} ", x, y);
+        return CoreUtils.format("x:{0} y:{1} z:{2} ", x, y, z);
     }
 
     public boolean lessThan(Coordinate c) {
         if (this.getDimensionType() != c.getDimensionType()) {
             throw new AppException("Can't compare oranges with apples", new InputMismatchException());
         }
-        return (getDimensionType() == Type.THREED)?this.getX() < c.getX() && this.getY() < c.getY() && this.getZ() < c.getZ() : this.getX() < c.getX() && this.getY() < c.getY();
+        return (getDimensionType() == Type.THREED)?this.getX() < c.getX() || this.getY() < c.getY() || this.getZ() < c.getZ() : this.getX() < c.getX() || this.getY() < c.getY();
     }
 
     public boolean greaterThan(Coordinate c) {
         if (this.getDimensionType() != c.getDimensionType()) {
             throw new AppException("Can't compare oranges with apples", new InputMismatchException());
         }
-        return (getDimensionType() == Type.THREED)?this.getX() > c.getX() && this.getY() > c.getY() && this.getZ() > c.getZ() : this.getX() > c.getX() && this.getY() > c.getY();
+        return (getDimensionType() == Type.THREED)?this.getX() > c.getX() || this.getY() > c.getY() || this.getZ() > c.getZ() : this.getX() > c.getX() || this.getY() > c.getY();
     }
 
     public boolean equalTo(Coordinate c) {
         if (this.getDimensionType() != c.getDimensionType()) {
             throw new AppException("Can't compare oranges with apples", new InputMismatchException());
         }
-        return this.getX() == c.getX() && this.getY() == c.getY() && (getDimensionType() == Type.THREED) ? this.getZ() == c.getZ() : true;
+        return (getDimensionType() == Type.THREED)?this.getX() == c.getX() || this.getY() == c.getY() ||  this.getZ() == c.getZ():this.getX() == c.getX() || this.getY() == c.getY();
     }
 
     @Override

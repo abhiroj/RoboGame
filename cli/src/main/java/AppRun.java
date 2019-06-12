@@ -4,10 +4,18 @@ import core.src.main.java.core.game.*;
 public class AppRun {
 
     public static void main(String[] args) {
-        Playground playground = PlaygroundFactory.getInstance().get2DPlayground(SquareFactory.getInstance().request2DShapeAsArray(10, 15));
+        Playground playground = PlaygroundFactory.getInstance().get2DPlayground(SquareFactory.getInstance().request2DShapeAsArray(100, 150));
         CLIGameController cliGameController = new CLIGameController();
         cliGameController.setPlayground(playground);
-        cliGameController.deploy(RoverFactory.getInstance().requestRunnableRover(new Coordinate(5,7)));
+        Rover rover=RoverFactory.getInstance().requestRunnableRover();
+        rover.setCoordinate(new Coordinate(12,45));
+        rover.setGameController(cliGameController);
+        cliGameController.deploy(rover);
+        Rover rover1=RoverFactory.getInstance().requestRunnableRover();
+        rover1.setCoordinate(new Coordinate(0,0));
+        rover1.setGameController(cliGameController);
+        cliGameController.deploy(rover1);
+
     }
 
 }

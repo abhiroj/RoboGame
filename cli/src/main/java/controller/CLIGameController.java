@@ -7,7 +7,6 @@ import core.src.main.java.core.game.Playground;
 import core.src.main.java.core.game.Rover;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,25 +22,25 @@ public class CLIGameController implements GameController {
     }
 
     public void deploy(Rover rover) {
-        if (visitedCoordinates.contains(rover.getCurrentCoordinate())) {
-            throw new AppException("Unable to deploy rover " + rover.getId());
+        if (!isValid(rover.getCurrentCoordinate())) {
+            throw new AppException("Not valid coordinates" + rover.getCurrentCoordinate());
         }
+        rover.activate();
         deployedRovers.add(rover);
-        rover.setGameController(this);
-        rover.move();
-        System.out.println("Rover " + rover.getId() + " successfully deployed");
     }
 
     public void demobilze(Rover rover) {
+        if (!deployedRovers.contains(rover)) {
+            throw new AppException(rover.toString() + " not deployed! unable to demobilize.");
+        }
         rover.stop();
         deployedRovers.remove(rover);
-        System.out.println("Rover " + rover.getId() + " successfully demobilized");
     }
 
-    public boolean shouldMove(Rover rover) {
-        if (visitedCoordinates.contains(rover.getCurrentCoordinate()) && checkBounds(rover.getCurrentCoordinate()))
-            return false;
-        return true;
+    public Coordinate nextMove(Coordinate coordinate) {
+        visitedCoordinates.add(coordinate);
+        Coordinate c = new Coordinate(coordinate.getX() + 1, coordinate.getY() + 1);
+        return isValid(c) ? c : null;
     }
 
     public void setPlayground(Playground playground) {
@@ -52,17 +51,27 @@ public class CLIGameController implements GameController {
         return playground;
     }
 
-    @Override
     public Map<String, Object> collect(Coordinate coordinate) {
-        return new HashMap<>();
+        return null;
     }
 
-    private boolean checkBounds(Coordinate coordinate) {
-        List<Coordinate> list = playground.getDimensions();
-        for (Coordinate outbound : list) {
-            if (outbound.getDimensionType() != coordinate.getDimensionType() && outbound.getX() <= coordinate.getX() && outbound.getY() <= coordinate.getY())
-                return false;
+    private boolean isValid(Coordinate coordinate) {
+        if (coordinate == null || visitedCoordinates.contains(coordinate)) {
+            return false;
         }
+        List<Coordinate> list = playground.getCoordinateBounds();
+        Coordinate max = new Coordinate(-1, -1);
+        Coordinate min = new Coordinate(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        for (Coordinate c : list) {
+            if (c.lessThan(min)) {
+                min = c;
+            }
+            if (c.greaterThan(max)) {
+                max = c;
+            }
+        }
+        if (coordinate.lessThan(min) || coordinate.greaterThan(max) || !coordinate.equalTo(max))
+            return false;
         return true;
     }
 }

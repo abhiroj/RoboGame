@@ -39,15 +39,6 @@ class RunnableRover implements Rover, Runnable {
 
     @Override
     public void move() {
-        while (coordinate == null) {
-            System.out.println("Not valid coordinates ");
-            System.out.println(this.toString() + " waiting for valid coordinates");
-            try {
-                Thread.currentThread().sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
         System.out.println("Visited " + coordinate.toString() +"by "+this.toString());
         coordinate = controller.nextMove(coordinate);
     }
