@@ -8,9 +8,9 @@ public interface Playground {
      *
      * @return
      */
-    List<Coordinate> getCoordinateBounds();
+    List<Coordinate> getBoundaryCoordinates();
 
-    Coordinate.Type getDimensionType();
+    Type getDimensionType();
 
     Shape getShapeAtCoordinate(Coordinate c);
 

@@ -14,7 +14,7 @@ class Playground2D implements Playground {
     }
 
     @Override
-    public List<Coordinate> getCoordinateBounds() {
+    public List<Coordinate> getBoundaryCoordinates() {
         List<Coordinate> originCoordinate = new ArrayList<>();
         originCoordinate.add(shape2D[0][0].getCoordinate());
         originCoordinate.add(shape2D[shape2D.length - 1][shape2D[0].length - 1].getCoordinate());
@@ -22,13 +22,13 @@ class Playground2D implements Playground {
     }
 
     @Override
-    public Coordinate.Type getDimensionType() {
-        return Coordinate.Type.TWOD;
+    public Type getDimensionType() {
+        return Type.TWOD;
     }
 
     @Override
     public Shape getShapeAtCoordinate(Coordinate c) {
-        if (c.getDimensionType() != Coordinate.Type.TWOD)
+        if (c.getDimensionType() != Type.TWOD)
             throw new AppException("Illegal Method Access!");
         for (Shape[] row : shape2D) {
             for (Shape col : row) {

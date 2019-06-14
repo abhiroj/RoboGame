@@ -46,7 +46,7 @@ class RunnableRover implements Rover, Runnable {
     @Override
     public void stop() {
         if(!activate){
-            System.out.println("can not stop a rover not activated!");
+            System.out.println("can not stop a rover which is not activated!");
             return;
         }
         System.out.println("Pulling Aside!");

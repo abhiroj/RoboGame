@@ -25,7 +25,7 @@ class Square implements Shape {
 
     @Override
     public Coordinate getCoordinate() {
-        if (coordinate.getDimensionType() == Coordinate.Type.TWOD)
+        if (coordinate.getDimensionType() == Type.TWOD)
             return new Coordinate(coordinate.getX(), coordinate.getY());
         return new Coordinate(coordinate.getX(), coordinate.getY(), coordinate.getZ());
     }

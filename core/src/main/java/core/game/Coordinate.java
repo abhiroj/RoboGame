@@ -7,21 +7,6 @@ import java.util.InputMismatchException;
 
 public class Coordinate implements Comparable<Coordinate> {
 
-    public enum Type {
-        TWOD("Two-Dimensional "), THREED("Three-Dimensional ");
-
-        private String s;
-
-        Type(String s) {
-            this.s = s;
-        }
-
-        public String valueOf() {
-            return s;
-        }
-
-    }
-
     private int x;
     private int y;
     private int z;
