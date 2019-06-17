@@ -1,22 +1,23 @@
-package core.src.main.java.core.game;
+package core.elements.rover;
 
-import core.src.main.java.core.controller.GameController;
-import core.src.main.java.core.exception.AppException;
+import core.controller.RoverManager;
+import core.elements.coordinate.Coordinate;
+import core.exception.AppException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class RunnableRover implements Rover, Runnable {
+public class RoverImpl implements Rover, Runnable {
 
     private Coordinate coordinate;
     private final int id;
     private List<Map<String, Object>> repository;
     private boolean shouldRun = false;
-    private GameController controller;
+    private RoverManager controller;
     private boolean activate = false;
 
-    RunnableRover(int id) {
+    public RoverImpl(int id) {
         this.id = id;
         repository = new ArrayList<>();
     }
@@ -28,6 +29,14 @@ class RunnableRover implements Rover, Runnable {
 
     @Override
     public void activate() {
+        activate(coordinate);
+    }
+
+    @Override
+    public void activate(Coordinate coordinate) {
+        if (coordinate == null) {
+            throw new AppException(this.toString() + " can not be activated without coordinates");
+        }
         if (activate) {
             throw new AppException(this.toString() + " can not be activated again");
         }
@@ -39,13 +48,12 @@ class RunnableRover implements Rover, Runnable {
 
     @Override
     public void move() {
-        System.out.println("Visited " + coordinate.toString() +"by "+this.toString());
-        coordinate = controller.nextMove(coordinate);
+        System.out.println("Visited " + coordinate.toString() + "by " + this.toString());
     }
 
     @Override
     public void stop() {
-        if(!activate){
+        if (!activate) {
             System.out.println("can not stop a rover which is not activated!");
             return;
         }
@@ -65,17 +73,8 @@ class RunnableRover implements Rover, Runnable {
     }
 
     @Override
-    public void setGameController(GameController handler) {
+    public void setController(RoverManager handler) {
         this.controller = handler;
-    }
-
-    @Override
-    public void setCoordinate(Coordinate coordinate) {
-        if(this.coordinate==null){
-            this.coordinate=coordinate;
-        }else{
-            throw new AppException("Coordinate already present");
-        }
     }
 
 

@@ -1,4 +1,7 @@
-package core.src.main.java.core.game;
+package core.factory;
+
+import core.elements.rover.Rover;
+import core.elements.rover.RoverImpl;
 
 public class RoverFactory {
 
@@ -16,8 +19,8 @@ public class RoverFactory {
         return instance;
     }
 
-    public Rover requestRunnableRover() {
-        Rover rover = new RunnableRover(++rover_count);
+    public Rover createRover() {
+        Rover rover = new RoverImpl(++rover_count);
         return rover;
     }
 

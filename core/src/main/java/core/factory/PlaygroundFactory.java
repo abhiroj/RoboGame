@@ -1,4 +1,7 @@
-package core.src.main.java.core.game;
+package core.factory;
+
+import core.elements.playground.Playground;
+import core.elements.shape.Shape;
 
 /**
  * Singleton Playground Factory
@@ -12,7 +15,7 @@ public class PlaygroundFactory {
     }
 
     public Playground get2DPlayground(Shape[][] shape2D) {
-        return new Playground2D(shape2D);
+        return null;
     }
 
     public static PlaygroundFactory getInstance() {

@@ -1,15 +1,18 @@
-package core.src.main.java.core.game;
+package core.elements.playground;
 
-import core.src.main.java.core.exception.AppException;
+import core.elements.DimensionType;
+import core.elements.coordinate.Coordinate;
+import core.elements.shape.Shape;
+import core.exception.AppException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class Playground2D implements Playground {
+public class PlaygroundImpl implements Playground {
 
     private final Shape[][] shape2D;
 
-    Playground2D(Shape[][] shape2D) {
+    public PlaygroundImpl(Shape[][] shape2D) {
         this.shape2D = shape2D;
     }
 
@@ -22,13 +25,13 @@ class Playground2D implements Playground {
     }
 
     @Override
-    public Type getDimensionType() {
-        return Type.TWOD;
+    public DimensionType getDimensionType() {
+        return DimensionType.TWOD;
     }
 
     @Override
     public Shape getShapeAtCoordinate(Coordinate c) {
-        if (c.getDimensionType() != Type.TWOD)
+        if (c.getDimensionType() != DimensionType.TWOD)
             throw new AppException("Illegal Method Access!");
         for (Shape[] row : shape2D) {
             for (Shape col : row) {

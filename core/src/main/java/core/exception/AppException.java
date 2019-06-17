@@ -1,4 +1,4 @@
-package core.src.main.java.core.exception;
+package core.exception;
 
 public class AppException extends RuntimeException {
 

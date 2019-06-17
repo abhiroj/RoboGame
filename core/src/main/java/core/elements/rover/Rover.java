@@ -1,6 +1,7 @@
-package core.src.main.java.core.game;
+package core.elements.rover;
 
-import core.src.main.java.core.controller.GameController;
+import core.controller.RoverManager;
+import core.elements.coordinate.Coordinate;
 
 public interface Rover {
 
@@ -12,12 +13,18 @@ public interface Rover {
     int getId();
 
     /**
-     * activate this rover to tread on playground.
+     * activate this rover to tread.
+     * Throws runtime exception if coordinates are not set.
      */
     void activate();
 
     /**
-     * determines one move of the rover
+     * activate this rover to tread on the given coordinates
+     */
+    void activate(Coordinate coordinate);
+
+    /**
+     * determines a move of the rover
      */
     void move();
 
@@ -40,10 +47,10 @@ public interface Rover {
 
     /**
      * Sets the controller which controls this rover
+     *
      * @param handler
      */
-    void setGameController(GameController handler);
+    void setController(RoverManager handler);
 
-    void setCoordinate(Coordinate coordinate);
 
 }
