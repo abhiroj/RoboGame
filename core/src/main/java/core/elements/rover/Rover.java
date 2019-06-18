@@ -1,6 +1,7 @@
 package core.elements.rover;
 
-import core.controller.RoverManager;
+import core.controller.CollectionProvider;
+import core.controller.MovementProvider;
 import core.elements.coordinate.Coordinate;
 
 public interface Rover {
@@ -46,11 +47,18 @@ public interface Rover {
     void dump();
 
     /**
-     * Sets the controller which controls this rover
+     * Sets Movement Provider
      *
      * @param handler
      */
-    void setController(RoverManager handler);
+    void setMovementProvider(MovementProvider handler);
+
+    /**
+     * Sets Collection Provider
+     *
+     * @param handler
+     */
+    void setCollectionProvider(CollectionProvider handler);
 
 
 }

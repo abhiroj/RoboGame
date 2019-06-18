@@ -1,25 +1,21 @@
 package core.elements.rover;
 
-import core.controller.RoverManager;
+import core.controller.CollectionProvider;
+import core.controller.MovementProvider;
 import core.elements.coordinate.Coordinate;
 import core.exception.AppException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class RoverImpl implements Rover, Runnable {
 
     private Coordinate coordinate;
     private final int id;
-    private List<Map<String, Object>> repository;
     private boolean shouldRun = false;
-    private RoverManager controller;
+    private MovementProvider controller;
     private boolean activate = false;
+    private CollectionProvider collector;
 
     public RoverImpl(int id) {
         this.id = id;
-        repository = new ArrayList<>();
     }
 
     @Override
@@ -40,6 +36,7 @@ public class RoverImpl implements Rover, Runnable {
         if (activate) {
             throw new AppException(this.toString() + " can not be activated again");
         }
+        this.coordinate = coordinate;
         activate = true;
         shouldRun = true;
         System.out.println("everybody, buckle up please!" + this.toString() + " on the move.");
@@ -49,6 +46,14 @@ public class RoverImpl implements Rover, Runnable {
     @Override
     public void move() {
         System.out.println("Visited " + coordinate.toString() + "by " + this.toString());
+        collector.collect(this.coordinate);
+        try {
+            coordinate = controller.nextMove(this.coordinate);
+        } catch (AppException e) {
+            e.printStackTrace();
+            System.out.println(this.toString() + " stopping itself");
+            this.stop();
+        }
     }
 
     @Override
@@ -73,8 +78,13 @@ public class RoverImpl implements Rover, Runnable {
     }
 
     @Override
-    public void setController(RoverManager handler) {
+    public void setMovementProvider(MovementProvider handler) {
         this.controller = handler;
+    }
+
+    @Override
+    public void setCollectionProvider(CollectionProvider handler) {
+        this.collector = handler;
     }
 
 

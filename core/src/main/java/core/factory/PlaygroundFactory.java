@@ -1,6 +1,7 @@
 package core.factory;
 
 import core.elements.playground.Playground;
+import core.elements.playground.PlaygroundImpl;
 import core.elements.shape.Shape;
 
 /**
@@ -15,7 +16,7 @@ public class PlaygroundFactory {
     }
 
     public Playground get2DPlayground(Shape[][] shape2D) {
-        return null;
+        return new PlaygroundImpl(shape2D);
     }
 
     public static PlaygroundFactory getInstance() {

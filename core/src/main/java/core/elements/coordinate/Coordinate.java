@@ -3,6 +3,7 @@ package core.elements.coordinate;
 
 import core.elements.DimensionType;
 
+import java.util.List;
 import java.util.Map;
 
 public interface Coordinate {
@@ -41,4 +42,8 @@ public interface Coordinate {
     boolean greaterThan(Coordinate c);
 
     boolean equalTo(Coordinate c);
+
+    List<Coordinate> getForwardCoordinates();
+
+    List<Coordinate> getBackwardCoordinates();
 }

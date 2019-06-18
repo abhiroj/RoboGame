@@ -1,5 +1,6 @@
 package core.elements.shape;
 
+import core.elements.Properties;
 import core.elements.PropertyType;
 import core.elements.coordinate.Coordinate;
 
@@ -18,12 +19,17 @@ public class ShapeImpl implements Shape {
         propTypeObjectMap = new HashMap<>();
         propTypeObjectMap.put(PropertyType.WEATHER, "22F");
         propTypeObjectMap.put(PropertyType.HUMIDITY, "31H");
-        propTypeObjectMap.put(PropertyType.UVRAD, "10SPF");
+        propTypeObjectMap.put(PropertyType.UVRAD, "unit");
     }
 
     @Override
-    public Map<PropertyType, Object> getProperties() {
-        return null;
+    public Properties getProperties() {
+        return new Properties() {
+            @Override
+            public String get() {
+                return propTypeObjectMap.toString();
+            }
+        };
     }
 
     @Override

@@ -5,6 +5,7 @@ import core.exception.AppException;
 import core.utilities.CoreUtils;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Map;
 
 public class CoordinateImpl implements Comparable<Coordinate>, Coordinate {
@@ -91,6 +92,20 @@ public class CoordinateImpl implements Comparable<Coordinate>, Coordinate {
             throw new AppException("Can't compare oranges with apples", new InputMismatchException());
         }
         return this.getX() == c.getX() || this.getY() == c.getY();
+    }
+
+    @Override
+    public List<Coordinate> getForwardCoordinates() {
+        Coordinate f1 = new CoordinateImpl(this.x + 1, this.y);
+        Coordinate f2 = new CoordinateImpl(this.x, this.y + 1);
+        return List.of(f1, f2);
+    }
+
+    @Override
+    public List<Coordinate> getBackwardCoordinates() {
+        Coordinate f1 = new CoordinateImpl(this.x - 1, this.y);
+        Coordinate f2 = new CoordinateImpl(this.x, this.y - 1);
+        return List.of(f1, f2);
     }
 
     @Override
