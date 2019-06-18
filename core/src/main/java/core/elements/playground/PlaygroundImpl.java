@@ -4,6 +4,7 @@ import core.elements.DimensionType;
 import core.elements.coordinate.Coordinate;
 import core.elements.shape.Shape;
 import core.exception.AppException;
+import core.utilities.CoreUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +32,15 @@ public class PlaygroundImpl implements Playground {
 
     @Override
     public Shape getShapeAtCoordinate(Coordinate c) {
+        CoreUtils.required("Coordinate", c);
         if (c.getDimensionType() != DimensionType.TWOD)
-            throw new AppException("Illegal Method Access!");
+            throw new AppException("2D playgrounds only supports 2D Coordinates");
         for (Shape[] row : shape2D) {
             for (Shape col : row) {
                 if (col.getCoordinate().equals(c))
                     return col;
             }
         }
-        throw new AppException("Shape does not exist!");
+        throw new AppException("Shape does not exist at" + c.toString());
     }
 }

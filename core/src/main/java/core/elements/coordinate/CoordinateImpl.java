@@ -73,7 +73,7 @@ public class CoordinateImpl implements Comparable<Coordinate>, Coordinate {
     @Override
     public boolean lessThan(Coordinate c) {
         if (this.getDimensionType() != c.getDimensionType()) {
-            throw new AppException("Can't compare oranges with apples", new InputMismatchException());
+            throw new AppException("can not compare "+this.getDimensionType().valueOf()+" with "+c.getDimensionType().valueOf(), new InputMismatchException());
         }
         return this.getX() < c.getX() || this.getY() < c.getY();
     }
@@ -81,7 +81,7 @@ public class CoordinateImpl implements Comparable<Coordinate>, Coordinate {
     @Override
     public boolean greaterThan(Coordinate c) {
         if (this.getDimensionType() != c.getDimensionType()) {
-            throw new AppException("Can't compare oranges with apples", new InputMismatchException());
+            throw new AppException("can not compare "+this.getDimensionType().valueOf()+" with "+c.getDimensionType().valueOf(), new InputMismatchException());
         }
         return this.getX() > c.getX() || this.getY() > c.getY();
     }
@@ -89,7 +89,7 @@ public class CoordinateImpl implements Comparable<Coordinate>, Coordinate {
     @Override
     public boolean equalTo(Coordinate c) {
         if (this.getDimensionType() != c.getDimensionType()) {
-            throw new AppException("Can't compare oranges with apples", new InputMismatchException());
+            throw new AppException("can not compare "+this.getDimensionType().valueOf()+" with "+c.getDimensionType().valueOf(), new InputMismatchException());
         }
         return this.getX() == c.getX() || this.getY() == c.getY();
     }
