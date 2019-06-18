@@ -111,7 +111,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
 
     private void validateRovers() {
         if (rovers.size() == 0) {
-            throw new AppException("Please add rovers to begin the game");
+            throw new AppException("No rovers to tread. Please add rovers in the game");
         }
     }
 
@@ -179,7 +179,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
                 return c;
             }
         } while (!counter.isEmpty());
-        throw new AppException("No Possible coordinate found!");
+        throw new AppException("No coordinates available");
     }
 
     private boolean visited(Coordinate coordinate) {
@@ -219,7 +219,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
         Coordinate c = nextPossibleCoordinate(coordinate);
         if (isValid(c))
             return c;
-        throw new AppException("No valid coordinate found.");
+        throw new AppException("Not a valid coordinate for next move "+c.toString());
     }
 
     @Override
@@ -231,4 +231,5 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
     public void collect(Coordinate c) {
         collectedProps.put(c, this.playground.getShapeAtCoordinate(c).getProperties());
     }
+
 }
