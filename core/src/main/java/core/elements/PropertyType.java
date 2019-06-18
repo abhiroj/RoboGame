@@ -1,5 +1,8 @@
 package core.elements;
 
+/**
+ * Properties supported by the game
+ */
 public enum PropertyType {
     WEATHER("Weather"), HUMIDITY("Humidity"), UVRAD("UV Index");
 

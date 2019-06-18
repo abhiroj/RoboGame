@@ -6,6 +6,10 @@ import core.elements.rover.Rover;
 
 import java.util.List;
 
+/**
+ * provides the functionality to do actions on the game.
+ * methods returns the status of corresponding action back to user
+ */
 public interface GameManager {
 
     /**

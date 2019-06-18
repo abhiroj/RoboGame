@@ -4,6 +4,9 @@ import core.elements.coordinate.Coordinate;
 
 import java.util.List;
 
+/**
+ * objects that traverse playground consume MovementProvider to get next moveable coordinates
+ */
 public interface MovementProvider {
 
     /**

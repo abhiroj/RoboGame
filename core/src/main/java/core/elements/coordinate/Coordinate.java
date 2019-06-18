@@ -35,15 +35,32 @@ public interface Coordinate {
      */
     Map<CoordinateType, Integer> getCoordinates();
 
+    /**
+     * returns the dimensionial type of the coordinate
+     *
+     * @return
+     */
     DimensionType getDimensionType();
 
+    /**
+     * return true if this coordinate less than @param Coordinate
+     *
+     * @param c
+     * @return
+     */
     boolean lessThan(Coordinate c);
 
+    /**
+     * @param c
+     * @return
+     */
     boolean greaterThan(Coordinate c);
 
     boolean equalTo(Coordinate c);
 
+    @Deprecated
     List<Coordinate> getForwardCoordinates();
 
+    @Deprecated
     List<Coordinate> getBackwardCoordinates();
 }
