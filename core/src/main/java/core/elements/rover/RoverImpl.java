@@ -4,6 +4,7 @@ import core.controller.CollectionProvider;
 import core.controller.MovementProvider;
 import core.elements.coordinate.Coordinate;
 import core.exception.AppException;
+import core.exception.NoCoordinateFound;
 
 public class RoverImpl implements Rover, Runnable {
 
@@ -49,9 +50,8 @@ public class RoverImpl implements Rover, Runnable {
         collector.collect(this.coordinate);
         try {
             coordinate = controller.nextMove(this.coordinate);
-        } catch (AppException e) {
-            e.printStackTrace();
-            System.out.println(this.toString() + " stopping itself");
+        } catch (NoCoordinateFound e) {
+            System.out.println(this.toString() + " stopping itself" + " becuase " + e.getMessage());
             this.stop();
         }
     }

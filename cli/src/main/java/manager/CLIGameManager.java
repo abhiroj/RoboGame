@@ -11,6 +11,7 @@ import core.elements.coordinate.CoordinateImpl;
 import core.elements.playground.Playground;
 import core.elements.rover.Rover;
 import core.exception.AppException;
+import core.exception.NoCoordinateFound;
 
 import java.util.*;
 
@@ -179,7 +180,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
                 return c;
             }
         } while (!counter.isEmpty());
-        throw new AppException("No coordinates available");
+        throw new NoCoordinateFound("No coordinates available");
     }
 
     private boolean visited(Coordinate coordinate) {
@@ -219,7 +220,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
         Coordinate c = nextPossibleCoordinate(coordinate);
         if (isValid(c))
             return c;
-        throw new AppException("Not a valid coordinate for next move "+c.toString());
+        throw new NoCoordinateFound("Not a valid coordinate for next move " + c.toString());
     }
 
     @Override
