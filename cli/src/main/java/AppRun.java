@@ -1,21 +1,18 @@
-import controller.CLIGameController;
-import core.src.main.java.core.game.*;
+import core.controller.GameManager;
+import core.factory.PlaygroundFactory;
+import core.factory.RoverFactory;
+import core.factory.ShapeFactory;
+import manager.CLIGameManager;
+
+import java.util.List;
 
 public class AppRun {
 
     public static void main(String[] args) {
-        Playground playground = PlaygroundFactory.getInstance().get2DPlayground(SquareFactory.getInstance().request2DShapeAsArray(100, 100));
-        CLIGameController cliGameController = new CLIGameController();
-        cliGameController.setPlayground(playground);
-        Rover rover=RoverFactory.getInstance().requestRunnableRover();
-        rover.setCoordinate(new Coordinate(0,0));
-        rover.setGameController(cliGameController);
-        cliGameController.deploy(rover);
-        Rover rover1=RoverFactory.getInstance().requestRunnableRover();
-        rover1.setCoordinate(new Coordinate(50,50));
-        rover1.setGameController(cliGameController);
-        cliGameController.deploy(rover1);
-
+        GameManager gameManager = new CLIGameManager();
+        gameManager.createGame(PlaygroundFactory.getInstance().get2DPlayground(ShapeFactory.getInstance().request2DShapeAsArray(5, 5)), List.of(RoverFactory.getInstance().createRover(),RoverFactory.getInstance().createRover()));
+        gameManager.startGame();
+        System.out.println(gameManager.getGameStatus().getStatus()+"\n"+gameManager.getGameStatus().getMessage());
     }
 
 }
