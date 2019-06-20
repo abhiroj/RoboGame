@@ -1,4 +1,4 @@
-package core.controller;
+package core.manager;
 
 import core.elements.GameStatus;
 import core.elements.playground.Playground;
@@ -55,7 +55,7 @@ public interface GameManager {
      *
      * @return
      */
-    GameStatus getGameStatus();
+    GameStatus getStatus();
 
 
     /**

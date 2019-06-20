@@ -1,4 +1,4 @@
-package core.controller;
+package core.manager;
 
 import core.elements.coordinate.Coordinate;
 
