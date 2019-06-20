@@ -31,7 +31,6 @@ public interface Coordinate {
 
     /**
      * @return
-     * @deprecated use <code>getCoordinates instead</code>
      */
     Map<CoordinateType, Integer> getCoordinates();
 
@@ -43,24 +42,9 @@ public interface Coordinate {
     DimensionType getDimensionType();
 
     /**
-     * return true if this coordinate less than @param Coordinate
+     * Returns a list of coordinates that can be traversed based on the current coordinate object
      *
-     * @param c
      * @return
      */
-    boolean lessThan(Coordinate c);
-
-    /**
-     * @param c
-     * @return
-     */
-    boolean greaterThan(Coordinate c);
-
-    boolean equalTo(Coordinate c);
-
-    @Deprecated
-    List<Coordinate> getForwardCoordinates();
-
-    @Deprecated
-    List<Coordinate> getBackwardCoordinates();
+    List<Coordinate> nextPossibleCoordinates();
 }

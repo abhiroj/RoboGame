@@ -4,11 +4,12 @@ import core.elements.DimensionType;
 import core.exception.AppException;
 import core.utilities.CoreUtils;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 
-public class CoordinateImpl implements Comparable<Coordinate>, Coordinate {
+public class CoordinateImpl implements Coordinate {
 
     private int x;
     private int y;
@@ -60,9 +61,10 @@ public class CoordinateImpl implements Comparable<Coordinate>, Coordinate {
             return false;
         }
         Coordinate c = (Coordinate) obj;
-        int var1 = x * 10 + y;
-        int var2 = c.getX() * 10 + c.getY();
-        return var1 == var2;
+        if (this.getDimensionType() != c.getDimensionType()) {
+            throw new AppException("can not compare " + this.getDimensionType().valueOf() + " with " + c.getDimensionType().valueOf(), new InputMismatchException());
+        }
+        return this.getCoordinates().equals(c.getCoordinates());
     }
 
     @Override
@@ -71,48 +73,23 @@ public class CoordinateImpl implements Comparable<Coordinate>, Coordinate {
     }
 
     @Override
-    public boolean lessThan(Coordinate c) {
-        if (this.getDimensionType() != c.getDimensionType()) {
-            throw new AppException("can not compare "+this.getDimensionType().valueOf()+" with "+c.getDimensionType().valueOf(), new InputMismatchException());
-        }
-        return this.getX() < c.getX() || this.getY() < c.getY();
+    public List<Coordinate> nextPossibleCoordinates() {
+        List moves = new ArrayList();
+        moves.addAll(getForwardCoordinates());
+        moves.addAll(getBackwardCoordinates());
+        return moves;
     }
 
-    @Override
-    public boolean greaterThan(Coordinate c) {
-        if (this.getDimensionType() != c.getDimensionType()) {
-            throw new AppException("can not compare "+this.getDimensionType().valueOf()+" with "+c.getDimensionType().valueOf(), new InputMismatchException());
-        }
-        return this.getX() > c.getX() || this.getY() > c.getY();
-    }
-
-    @Override
-    public boolean equalTo(Coordinate c) {
-        if (this.getDimensionType() != c.getDimensionType()) {
-            throw new AppException("can not compare "+this.getDimensionType().valueOf()+" with "+c.getDimensionType().valueOf(), new InputMismatchException());
-        }
-        return this.getX() == c.getX() || this.getY() == c.getY();
-    }
-
-    @Override
-    public List<Coordinate> getForwardCoordinates() {
+    private List<Coordinate> getForwardCoordinates() {
         Coordinate f1 = new CoordinateImpl(this.x + 1, this.y);
         Coordinate f2 = new CoordinateImpl(this.x, this.y + 1);
         return List.of(f1, f2);
     }
 
-    @Override
-    public List<Coordinate> getBackwardCoordinates() {
+    private List<Coordinate> getBackwardCoordinates() {
         Coordinate f1 = new CoordinateImpl(this.x - 1, this.y);
         Coordinate f2 = new CoordinateImpl(this.x, this.y - 1);
         return List.of(f1, f2);
-    }
-
-    @Override
-    public int compareTo(Coordinate o) {
-        if (lessThan(o)) return -1;
-        if (greaterThan(o)) return 1;
-        return 0;
     }
 
 
