@@ -14,6 +14,13 @@ public interface Rover {
     int getId();
 
     /**
+     * get rover's status if it is active or not.
+     *
+     * @return
+     */
+    boolean isActive();
+
+    /**
      * activate this rover to tread.
      * Throws runtime exception if coordinates are not set.
      */
@@ -40,11 +47,6 @@ public interface Rover {
      * @return Coordinate
      */
     Coordinate getCurrentCoordinate();
-
-    /**
-     * Show a dump of collected properties
-     */
-    void dump();
 
     /**
      * Sets Movement Provider

@@ -12,7 +12,7 @@ public class RoverImpl implements Rover, Runnable {
     private final int id;
     private boolean shouldRun = false;
     private MovementProvider controller;
-    private boolean activate = false;
+    private boolean isActive = false;
     private CollectionProvider collector;
 
     public RoverImpl(int id) {
@@ -34,31 +34,29 @@ public class RoverImpl implements Rover, Runnable {
         if (coordinate == null) {
             throw new AppException(this.toString() + " can not be activated without coordinates");
         }
-        if (activate) {
+        if (isActive) {
             throw new AppException(this.toString() + " can not be activated again");
         }
         this.coordinate = coordinate;
-        activate = true;
+        isActive = true;
         shouldRun = true;
         System.out.println("everybody, buckle up please!" + this.toString() + " on the move.");
         new Thread(this, this.toString()).start();
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 
     @Override
     public void move() {
         System.out.println("Visited " + coordinate.toString() + "by " + this.toString());
         collector.collect(this.coordinate);
-        try {
-            coordinate = controller.nextMove(this.coordinate);
-        } catch (NoCoordinateFound e) {
-            System.out.println(this.toString() + " stopping itself" + " becuase " + e.getMessage());
-            this.stop();
-        }
     }
 
     @Override
     public void stop() {
-        if (!activate) {
+        if (!isActive) {
             System.out.println("can not stop a rover which is not activated!");
             return;
         }
@@ -69,12 +67,6 @@ public class RoverImpl implements Rover, Runnable {
     @Override
     public Coordinate getCurrentCoordinate() {
         return coordinate;
-    }
-
-
-    @Override
-    public void dump() {
-
     }
 
     @Override
@@ -92,6 +84,17 @@ public class RoverImpl implements Rover, Runnable {
     public void run() {
         while (shouldRun) {
             move();
+            try {
+                coordinate = controller.nextMove(this.coordinate);
+            } catch (NoCoordinateFound e) {
+                System.out.println(this.toString() + " stopping itself" + " because " + e.getMessage());
+                this.stop();
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
