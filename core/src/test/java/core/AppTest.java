@@ -1,4 +1,4 @@
-package core.src.test.java.core;
+package core;
 
 
 /**
