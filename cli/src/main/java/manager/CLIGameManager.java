@@ -1,19 +1,21 @@
 package manager;
 
-import core.controller.CollectionProvider;
-import core.controller.GameManager;
-import core.controller.MovementProvider;
-import core.elements.DimensionType;
 import core.elements.GameStatus;
 import core.elements.Properties;
 import core.elements.coordinate.Coordinate;
-import core.elements.coordinate.CoordinateImpl;
 import core.elements.playground.Playground;
 import core.elements.rover.Rover;
 import core.exception.AppException;
 import core.exception.NoCoordinateFound;
+import core.manager.CollectionProvider;
+import core.manager.GameManager;
+import core.manager.MovementProvider;
+import core.utilities.CoreUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CLIGameManager implements GameManager, MovementProvider, CollectionProvider {
 
@@ -35,10 +37,10 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
 
     @Override
     public GameStatus createGame(Playground playground, List<Rover> rovers) {
-        this.playground = playground;
+        setPlayground(playground);
         for (Rover rover : rovers)
             this.rovers.add(rover);
-        return GameStatus.createStatus(200, "Create game successful");
+        return GameStatus.status(200, "Create game successful");
     }
 
     @Override
@@ -55,7 +57,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
                 count++;
             }
         }
-        return GameStatus.createStatus(200, "Added " + count + "rovers to the game");
+        return GameStatus.status(200, "Added " + count + "rovers to the game");
     }
 
     @Override
@@ -69,15 +71,18 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
         for (Rover rover : roverList) {
             if (rovers.contains(rover)) {
                 rovers.remove(rover);
+                rover.stop();
                 count++;
             }
         }
-        return GameStatus.createStatus(200, "Removed " + count + " rovers from the game");
+        return GameStatus.status(200, "Removed " + count + " rovers from the game");
     }
 
     @Override
     public GameStatus setPlayground(Playground playground) {
-        return null;
+        CoreUtils.required("Playground", playground);
+        this.playground = playground;
+        return GameStatus.status(200, "Game equipped with " + playground.toString());
     }
 
     @Override
@@ -92,7 +97,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
             rover.setMovementProvider(this);
             rover.setCollectionProvider(this);
             if (rover.getCurrentCoordinate() == null) {
-                rover.activate(getFirstValidCoordinate());
+                rover.activate(getFirstNonVisitedCoordinate());
                 continue;
             } else {
                 if (!isValid(rover.getCurrentCoordinate())) {
@@ -107,7 +112,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return GameStatus.createStatus(200, "All the rovers deployed successfully");
+        return GameStatus.status(200, "All the rovers deployed successfully");
     }
 
     private void validateRovers() {
@@ -119,108 +124,63 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
     @Override
     public GameStatus finishGame() {
         removeRovers(rovers);
-        return getGameStatus();
+        return getStatus();
     }
 
     @Override
-    public GameStatus getGameStatus() {
-        List<Coordinate> coordinates = this.playground.getBoundaryCoordinates();
-        Coordinate start = coordinates.get(0);
-        Coordinate end = coordinates.get(coordinates.size() - 1);
-        Stack<Coordinate> dfs = new Stack<>();
-        dfs.push(start);
+    public GameStatus getStatus() {
+        List<Coordinate> coordinates = this.playground.getCoordinates();
         StringBuilder builder = new StringBuilder();
-        List<Coordinate> memo = new ArrayList<>();
-        while (!dfs.empty()) {
-            Coordinate c = dfs.pop();
-            if (c.lessThan(start) || c.greaterThan(end) || memo.contains(c)) {
-                continue;
-            }
-            builder.append(c.toString() + " " + ((visitedCoordinates.contains(c)) ?
-                    "visited " + collectedProps.get(c).get() + "\n" :
-                    "not visited \n"));
-            memo.add(c);
-            for (Coordinate push : c.getForwardCoordinates()) {
-                dfs.push(push);
-            }
-            for (Coordinate push : c.getBackwardCoordinates()) {
-                dfs.push(push);
-            }
+        for (Coordinate c : coordinates) {
+            String y = c.toString();
+            System.out.println(y);
+            String message = collectedProps.get(c).get();
+            builder.append(isVisited(c) ? y + " visited " + message + " \n" :
+                    y +
+                            " not " +
+                            "visited \n");
         }
-        return GameStatus.createStatus(200, builder.toString());
+        return GameStatus.status(200, builder.toString());
     }
 
-    private Coordinate getFirstValidCoordinate() {
-        Coordinate c1 = null;
-        List<Coordinate> list = playground.getBoundaryCoordinates();
-        Coordinate min = new CoordinateImpl(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        for (Coordinate c : list) {
-            if (c.lessThan(min)) {
-                min = c;
-            }
-        }
-        c1 = nextPossibleCoordinate(min);
-        return c1;
-    }
-
-    private Coordinate nextPossibleCoordinate(Coordinate c) {
-        Queue<Coordinate> counter = new LinkedList<>();
-        if (c.getDimensionType() == DimensionType.TWOD) {
-            counter.offer(new CoordinateImpl(c.getX() + 1, c.getY()));
-            counter.offer(new CoordinateImpl(c.getX() - 1, c.getY()));
-            counter.offer(new CoordinateImpl(c.getX(), c.getY() + 1));
-            counter.offer(new CoordinateImpl(c.getX(), c.getY() - 1));
-        }
-        do {
-            c = counter.poll();
-            if (!inBounds(c)) {
-                continue;
-            }
-            if (!visited(c)) {
+    private Coordinate getFirstNonVisitedCoordinate() {
+        for (Coordinate c : playground.getCoordinates()) {
+            if (!isVisited(c)) {
+                visitedCoordinates.add(c);
                 return c;
             }
-        } while (!counter.isEmpty());
-        throw new NoCoordinateFound("No coordinates available");
+        }
+        throw new NoCoordinateFound("no coordinates available");
     }
 
-    private boolean visited(Coordinate coordinate) {
-        if (coordinate == null || visitedCoordinates.contains(coordinate)) {
-            return true;
-        }
-        return false;
+    private boolean isVisited(Coordinate coordinate) {
+        if (coordinate == null) return false;
+        boolean res = visitedCoordinates.contains(coordinate);
+        return res;
     }
 
 
-    private boolean inBounds(Coordinate coordinate) {
-        List<Coordinate> list = playground.getBoundaryCoordinates();
-        Coordinate max = new CoordinateImpl(-1, -1);
-        Coordinate min = new CoordinateImpl(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        for (Coordinate c : list) {
-            if (c.lessThan(min)) {
-                min = c;
-            }
-            if (c.greaterThan(max)) {
-                max = c;
-            }
-        }
-        boolean lessThan = coordinate.lessThan(min);
-        boolean greaterThan = coordinate.greaterThan(max);
-        if (lessThan || greaterThan)
-            return false;
-        return true;
+    private boolean isInBounds(Coordinate coordinate) {
+        if (coordinate == null) return false;
+        List<Coordinate> groundCoordinates = this.playground.getCoordinates();
+        boolean res = groundCoordinates.contains(coordinate);
+        return res;
     }
 
     private boolean isValid(Coordinate c) {
-        return !(visited(c) || !inBounds(c));
+        return isInBounds(c) && !isVisited(c);
     }
 
     @Override
     public synchronized Coordinate nextMove(Coordinate coordinate) {
         visitedCoordinates.add(coordinate);
-        Coordinate c = nextPossibleCoordinate(coordinate);
-        if (isValid(c))
-            return c;
-        throw new NoCoordinateFound("Not a valid coordinate for next move " + c.toString());
+        List<Coordinate> c = coordinate.nextPossibleCoordinates();
+        for (Coordinate x : c) {
+            if (isValid(x)) {
+                return x;
+            }
+        }
+        throw new NoCoordinateFound("Not a valid coordinate for next move " + coordinate.toString());
     }
 
     @Override
