@@ -1,7 +1,7 @@
 package core.elements.rover;
 
-import core.controller.CollectionProvider;
-import core.controller.MovementProvider;
+import core.manager.CollectionProvider;
+import core.manager.MovementProvider;
 import core.elements.coordinate.Coordinate;
 import core.exception.AppException;
 import core.exception.NoCoordinateFound;
