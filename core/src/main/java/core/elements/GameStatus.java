@@ -9,7 +9,7 @@ public interface GameStatus {
      * get status of the operation
      * @return
      */
-    int getStatus();
+    int getCode();
 
     /**
      * get message from the operation
@@ -17,11 +17,11 @@ public interface GameStatus {
      */
     Object getMessage();
 
-    static GameStatus createStatus(int status, Object message) {
+    static GameStatus status(int code, Object message) {
         return new GameStatus() {
             @Override
-            public int getStatus() {
-                return status;
+            public int getCode() {
+                return code;
             }
 
             @Override
