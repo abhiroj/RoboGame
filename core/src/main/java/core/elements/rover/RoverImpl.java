@@ -1,10 +1,10 @@
 package core.elements.rover;
 
-import core.manager.CollectionProvider;
-import core.manager.MovementProvider;
 import core.elements.coordinate.Coordinate;
 import core.exception.AppException;
 import core.exception.NoCoordinateFound;
+import core.manager.CollectionProvider;
+import core.manager.MovementProvider;
 
 public class RoverImpl implements Rover, Runnable {
 
@@ -83,13 +83,13 @@ public class RoverImpl implements Rover, Runnable {
     @Override
     public void run() {
         while (shouldRun) {
-            move();
             try {
                 coordinate = controller.nextMove(this.coordinate);
             } catch (NoCoordinateFound e) {
                 System.out.println(this.toString() + " stopping itself" + " because " + e.getMessage());
                 this.stop();
             }
+            move();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

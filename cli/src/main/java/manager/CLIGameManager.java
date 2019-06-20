@@ -21,12 +21,12 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
 
     private Playground playground;
     private List<Rover> rovers;
-    private List<Coordinate> visitedCoordinates;
+    private List<Coordinate> allotedCoordinates;
     private Map<Coordinate, Properties> collectedProps;
 
     public CLIGameManager() {
         rovers = new ArrayList<>();
-        visitedCoordinates = new ArrayList<>();
+        allotedCoordinates = new ArrayList<>();
         collectedProps = new HashMap<>();
     }
 
@@ -132,11 +132,9 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
         List<Coordinate> coordinates = this.playground.getCoordinates();
         StringBuilder builder = new StringBuilder();
         for (Coordinate c : coordinates) {
-            String y = c.toString();
-            System.out.println(y);
-            String message = collectedProps.get(c).get();
-            builder.append(isVisited(c) ? y + " visited " + message + " \n" :
-                    y +
+            builder.append(collectedProps.containsKey(c) ?
+                    c.toString() + " visited " + collectedProps.get(c).get() + " \n" :
+                    c.toString() +
                             " not " +
                             "visited \n");
         }
@@ -145,18 +143,16 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
 
     private Coordinate getFirstNonVisitedCoordinate() {
         for (Coordinate c : playground.getCoordinates()) {
-            if (!isVisited(c)) {
-                visitedCoordinates.add(c);
+            if (!isAlloted(c)) {
+                allotedCoordinates.add(c);
                 return c;
             }
         }
         throw new NoCoordinateFound("no coordinates available");
     }
 
-    private boolean isVisited(Coordinate coordinate) {
-        if (coordinate == null) return false;
-        boolean res = visitedCoordinates.contains(coordinate);
-        return res;
+    private boolean isAlloted(Coordinate coordinate) {
+        return allotedCoordinates.contains(coordinate);
     }
 
 
@@ -168,15 +164,15 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
     }
 
     private boolean isValid(Coordinate c) {
-        return isInBounds(c) && !isVisited(c);
+        return isInBounds(c) && !isAlloted(c);
     }
 
     @Override
     public synchronized Coordinate nextMove(Coordinate coordinate) {
-        visitedCoordinates.add(coordinate);
         List<Coordinate> c = coordinate.nextPossibleCoordinates();
         for (Coordinate x : c) {
             if (isValid(x)) {
+                allotedCoordinates.add(x);
                 return x;
             }
         }
