@@ -18,16 +18,14 @@ public class PlaygroundImpl implements Playground {
     }
 
     @Override
-    public List<Coordinate> getBoundaryCoordinates() {
-        List<Coordinate> originCoordinate = new ArrayList<>();
-        originCoordinate.add(shape2D[0][0].getCoordinate());
-        originCoordinate.add(shape2D[shape2D.length - 1][shape2D[0].length - 1].getCoordinate());
-        return originCoordinate;
-    }
-
-    @Override
-    public DimensionType getDimensionType() {
-        return DimensionType.TWOD;
+    public List<Coordinate> getCoordinates() {
+        List<Coordinate> coordinates = new ArrayList<>();
+        for (Shape[] row : shape2D) {
+            for (Shape s : row) {
+                coordinates.add(s.getCoordinate());
+            }
+        }
+        return coordinates;
     }
 
     @Override
