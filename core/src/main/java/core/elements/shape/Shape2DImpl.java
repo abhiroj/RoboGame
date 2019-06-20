@@ -7,13 +7,13 @@ import core.elements.coordinate.Coordinate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ShapeImpl implements Shape {
+public class Shape2DImpl implements Shape {
 
     private Map<PropertyType, Object> propTypeObjectMap;
     private Coordinate coordinate;
     private boolean visited;
 
-    public ShapeImpl(Coordinate coordinate) {
+    public Shape2DImpl(Coordinate coordinate) {
         this.coordinate = coordinate;
         visited = false;
         propTypeObjectMap = new HashMap<>();

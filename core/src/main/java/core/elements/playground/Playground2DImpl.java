@@ -9,11 +9,11 @@ import core.utilities.CoreUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaygroundImpl implements Playground {
+public class Playground2DImpl implements Playground {
 
     private final Shape[][] shape2D;
 
-    public PlaygroundImpl(Shape[][] shape2D) {
+    public Playground2DImpl(Shape[][] shape2D) {
         this.shape2D = shape2D;
     }
 
