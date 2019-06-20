@@ -52,6 +52,12 @@ public class RoverImpl implements Rover, Runnable {
     public void move() {
         System.out.println("Visited " + coordinate.toString() + "by " + this.toString());
         collector.collect(this.coordinate);
+        try {
+            coordinate = controller.nextMove(this.coordinate);
+        } catch (NoCoordinateFound e) {
+            System.out.println(this.toString() + " stopping itself" + " because " + e.getMessage());
+            this.stop();
+        }
     }
 
     @Override
@@ -83,12 +89,6 @@ public class RoverImpl implements Rover, Runnable {
     @Override
     public void run() {
         while (shouldRun) {
-            try {
-                coordinate = controller.nextMove(this.coordinate);
-            } catch (NoCoordinateFound e) {
-                System.out.println(this.toString() + " stopping itself" + " because " + e.getMessage());
-                this.stop();
-            }
             move();
             try {
                 Thread.sleep(1000);
