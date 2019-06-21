@@ -9,13 +9,11 @@ import java.util.Map;
 
 public class Shape2DImpl implements Shape {
 
-    private Map<PropertyType, Object> propTypeObjectMap;
-    private Coordinate coordinate;
-    private boolean visited;
+    private final Map<PropertyType, Object> propTypeObjectMap;
+    private final Coordinate coordinate;
 
     public Shape2DImpl(Coordinate coordinate) {
         this.coordinate = coordinate;
-        visited = false;
         propTypeObjectMap = new HashMap<>();
         propTypeObjectMap.put(PropertyType.WEATHER, "22F");
         propTypeObjectMap.put(PropertyType.HUMIDITY, "31H");

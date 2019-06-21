@@ -2,11 +2,11 @@ package core.elements.rover;
 
 import core.elements.coordinate.Coordinate;
 import core.exception.AppException;
-import core.exception.NoCoordinateFound;
+import core.exception.NoCoordinateFoundException;
 import core.manager.CollectionProvider;
 import core.manager.MovementProvider;
 
-public class RoverImpl implements Rover, Runnable {
+public class Rover implements Runnable, GenericRover {
 
     private Coordinate coordinate;
     private final int id;
@@ -15,20 +15,23 @@ public class RoverImpl implements Rover, Runnable {
     private boolean isActive = false;
     private CollectionProvider collector;
 
-    public RoverImpl(int id) {
+    public Rover(int id) {
         this.id = id;
     }
 
-    @Override
+    /**
+     * get current rovers Id.
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
-    @Override
-    public void activate() {
-        activate(coordinate);
-    }
-
+    /**
+     * activate this rover to tread on the given coordinates.
+     * Throws runtime exception.
+     */
     @Override
     public void activate(Coordinate coordinate) {
         if (coordinate == null) {
@@ -40,26 +43,35 @@ public class RoverImpl implements Rover, Runnable {
         this.coordinate = coordinate;
         isActive = true;
         shouldRun = true;
-        System.out.println("everybody, buckle up please!" + this.toString() + " on the move.");
+        System.out.println("everybody, buckle up please! " + this.toString() + " on the move.");
         new Thread(this, this.toString()).start();
     }
 
+    /**
+     * stops the current rover. Rover once stopped can not be restarted again.
+     */
     public boolean isActive() {
         return isActive;
     }
 
+    /**
+     * determines a move of the rover
+     */
     @Override
     public void move() {
         System.out.println("Visited " + coordinate.toString() + "by " + this.toString());
         collector.collect(this.coordinate);
         try {
             coordinate = controller.nextMove(this.coordinate);
-        } catch (NoCoordinateFound e) {
+        } catch (NoCoordinateFoundException e) {
             System.out.println(this.toString() + " stopping itself" + " because " + e.getMessage());
             this.stop();
         }
     }
 
+    /**
+     * stops the rover from further moving.
+     */
     @Override
     public void stop() {
         if (!isActive) {
@@ -70,21 +82,33 @@ public class RoverImpl implements Rover, Runnable {
         shouldRun = false;
     }
 
-    @Override
+    /**
+     * get current location of the rover.
+     *
+     * @return CoordinateImpl
+     */
     public Coordinate getCurrentCoordinate() {
         return coordinate;
     }
 
-    @Override
+    /**
+     * sets movement manager this rover talks to determine next move.
+     * pass null to not set it.
+     *
+     * @param handler
+     */
     public void setMovementProvider(MovementProvider handler) {
         this.controller = handler;
     }
 
-    @Override
+    /**
+     * sets collection provider the rover commands to make collection at the given coordinate
+     *
+     * @param handler
+     */
     public void setCollectionProvider(CollectionProvider handler) {
         this.collector = handler;
     }
-
 
     @Override
     public void run() {
@@ -100,6 +124,6 @@ public class RoverImpl implements Rover, Runnable {
 
     @Override
     public String toString() {
-        return "Rover " + this.getId();
+        return "Rover = " + this.getId();
     }
 }
