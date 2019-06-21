@@ -3,14 +3,18 @@ package manager;
 import core.elements.GameStatus;
 import core.elements.Properties;
 import core.elements.coordinate.Coordinate;
+import core.elements.coordinate.CoordinateUtils;
 import core.elements.playground.Playground;
 import core.elements.rover.Rover;
 import core.exception.AppException;
-import core.exception.NoCoordinateFound;
+import core.exception.NoCoordinateFoundException;
 import core.manager.CollectionProvider;
 import core.manager.GameManager;
 import core.manager.MovementProvider;
 import core.utilities.CoreUtils;
+import jdk.jshell.spi.ExecutionControl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,10 +23,12 @@ import java.util.Map;
 
 public class CLIGameManager implements GameManager, MovementProvider, CollectionProvider {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CLIGameManager.class);
+
     private Playground playground;
-    private List<Rover> rovers;
-    private List<Coordinate> allotedCoordinates;
-    private Map<Coordinate, Properties> collectedProps;
+    private final List<Rover> rovers;
+    private final List<Coordinate> allotedCoordinates;
+    private final Map<Coordinate, Properties> collectedProps;
 
     public CLIGameManager() {
         rovers = new ArrayList<>();
@@ -40,7 +46,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
         setPlayground(playground);
         for (Rover rover : rovers)
             this.rovers.add(rover);
-        return GameStatus.status(200, "Create game successful");
+        return GameStatus.createStatus(200, "Create game successful");
     }
 
     @Override
@@ -57,7 +63,17 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
                 count++;
             }
         }
-        return GameStatus.status(200, "Added " + count + "rovers to the game");
+        return GameStatus.createStatus(200, "Added " + count + "rovers to the game");
+    }
+
+    @Override
+    public GameStatus addRoversOnCoordinates(List<Coordinate> coordinates) {
+        try {
+            throw new ExecutionControl.NotImplementedException("addRoversOnCoordinates is not implemented.");
+        } catch (ExecutionControl.NotImplementedException e) {
+            e.printStackTrace();
+            throw new AppException(e);
+        }
     }
 
     @Override
@@ -75,14 +91,24 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
                 count++;
             }
         }
-        return GameStatus.status(200, "Removed " + count + " rovers from the game");
+        return GameStatus.createStatus(200, "Removed " + count + " rovers from the game");
+    }
+
+    @Override
+    public GameStatus removeRoversFromCoordinates(List<Coordinate> coordinates) {
+        try {
+            throw new ExecutionControl.NotImplementedException("removeRoversFromCoordinates is not implemented.");
+        } catch (ExecutionControl.NotImplementedException e) {
+            e.printStackTrace();
+            throw new AppException(e);
+        }
     }
 
     @Override
     public GameStatus setPlayground(Playground playground) {
         CoreUtils.required("Playground", playground);
         this.playground = playground;
-        return GameStatus.status(200, "Game equipped with " + playground.toString());
+        return GameStatus.createStatus(200, "Game equipped with " + playground.toString());
     }
 
     @Override
@@ -96,15 +122,12 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
         for (Rover rover : rovers) {
             rover.setMovementProvider(this);
             rover.setCollectionProvider(this);
-            if (rover.getCurrentCoordinate() == null) {
+            if (rover.getCoordinate() == null) {
                 rover.activate(getFirstNonVisitedCoordinate());
                 continue;
             } else {
-                if (!isValid(rover.getCurrentCoordinate())) {
-                    System.out.println(rover.toString() + " does not have valid set of coordinates. can not be " +
-                            "deployed");
-                }
-                rover.activate();
+                LOGGER.warn(rover.toString() + " does not have valid set of coordinates. can not be " +
+                        "deployed");
             }
         }
         try {
@@ -112,7 +135,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return GameStatus.status(200, "All the rovers deployed successfully");
+        return GameStatus.createStatus(200, "All the rovers deployed successfully");
     }
 
     private void validateRovers() {
@@ -138,7 +161,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
                             " not " +
                             "visited \n");
         }
-        return GameStatus.status(200, builder.toString());
+        return GameStatus.createStatus(200, builder.toString());
     }
 
     private Coordinate getFirstNonVisitedCoordinate() {
@@ -148,7 +171,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
                 return c;
             }
         }
-        throw new NoCoordinateFound("no coordinates available");
+        throw new NoCoordinateFoundException("no coordinates available");
     }
 
     private boolean isAlloted(Coordinate coordinate) {
@@ -169,19 +192,24 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
 
     @Override
     public synchronized Coordinate nextMove(Coordinate coordinate) {
-        List<Coordinate> c = coordinate.nextPossibleCoordinates();
+        List<Coordinate> c = CoordinateUtils.nextPossibleCoordinates(coordinate, 1);
         for (Coordinate x : c) {
             if (isValid(x)) {
                 allotedCoordinates.add(x);
                 return x;
             }
         }
-        throw new NoCoordinateFound("Not a valid coordinate for next move " + coordinate.toString());
+        throw new NoCoordinateFoundException("Not a valid coordinate for next move " + coordinate.toString());
     }
 
     @Override
     public synchronized Coordinate nextMove(Coordinate coordinate, List<Coordinate> diffCoordinates) {
-        return null;
+        try {
+            throw new ExecutionControl.NotImplementedException("nextMove is not implemented.");
+        } catch (ExecutionControl.NotImplementedException e) {
+            e.printStackTrace();
+            throw new AppException(e);
+        }
     }
 
     @Override
