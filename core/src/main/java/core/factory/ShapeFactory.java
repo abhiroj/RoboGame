@@ -1,26 +1,30 @@
 package core.factory;
 
+import core.elements.coordinate.AxisType;
 import core.elements.coordinate.CoordinateImpl;
 import core.elements.shape.Shape;
-import core.elements.shape.Shape2DImpl;
+import core.elements.shape.ShapeImpl;
+
+import java.util.Map;
+import java.util.TreeMap;
 
 public class ShapeFactory {
 
-    private static ShapeFactory sqFactory = null;
+    private ShapeFactory() {
+        //This class serves as a static factory for creation of shapes.
+    }
 
-    public Shape[][] request2DShapeAsArray(int x, int y) {
-        Shape[][] shape2D = new Shape2DImpl[x][y];
+    public static Shape[][] request2DShapeAsArray(int x, int y) {
+        Shape[][] shape2D = new ShapeImpl[x][y];
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                shape2D[i][j] = new Shape2DImpl(new CoordinateImpl(i, j));
+                Map<AxisType, Integer> treeMap = new TreeMap<>();
+                treeMap.put(AxisType.X, i);
+                treeMap.put(AxisType.Y, j);
+                shape2D[i][j] = new ShapeImpl(new CoordinateImpl(treeMap));
             }
         }
         return shape2D;
     }
 
-    public static ShapeFactory getInstance() {
-        if (sqFactory == null)
-            sqFactory = new ShapeFactory();
-        return sqFactory;
-    }
 }
