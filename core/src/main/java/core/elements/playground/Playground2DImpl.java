@@ -1,6 +1,5 @@
 package core.elements.playground;
 
-import core.elements.DimensionType;
 import core.elements.coordinate.Coordinate;
 import core.elements.shape.Shape;
 import core.exception.AppException;
@@ -31,8 +30,6 @@ public class Playground2DImpl implements Playground {
     @Override
     public Shape getShapeAtCoordinate(Coordinate c) {
         CoreUtils.required("Coordinate", c);
-        if (c.getDimensionType() != DimensionType.TWOD)
-            throw new AppException("2D playgrounds only supports 2D Coordinates");
         for (Shape[] row : shape2D) {
             for (Shape col : row) {
                 if (col.getCoordinate().equals(c))

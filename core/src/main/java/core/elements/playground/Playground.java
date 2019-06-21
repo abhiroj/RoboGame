@@ -8,7 +8,7 @@ import java.util.List;
 public interface Playground {
 
     /**
-     * get the coordinates playground is based upon.
+     * get the layout of the playground.
      *
      * @return
      */
