@@ -8,7 +8,7 @@ import java.util.Objects;
 public final class CoreUtils {
 
     private CoreUtils() {
-
+        //this class provides support methods for the module
     }
 
     public static String format(String format, Object... args) {
