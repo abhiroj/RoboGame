@@ -9,9 +9,9 @@ import core.elements.rover.Rover;
 import core.exception.AppException;
 import core.exception.NoCoordinateFoundException;
 import core.factory.RoverFactory;
-import core.manager.CollectionProvider;
+import core.provider.CollectionProvider;
 import core.manager.GameManager;
-import core.manager.MovementProvider;
+import core.provider.MovementProvider;
 import core.utilities.CoreUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,8 +91,14 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
 
     @Override
     public GameStatus removeRovers(int roverCount) {
-        return null;
+        try {
+            throw new UnsupportedOperationException("removeRovers not implemented");
+        } catch (UnsupportedOperationException e) {
+            LOGGER.warn(e.getLocalizedMessage(), e);
+            throw new AppException(e);
+        }
     }
+
 
     @Override
     public GameStatus removeRovers(List<Rover> roverList) {
@@ -126,7 +132,8 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
 
     @Override
     public GameStatus removePlayground(Playground playground) {
-        return null;
+        this.playground = null;
+        return GameStatus.createStatus(200, "Playground removed from game");
     }
 
     @Override
@@ -142,11 +149,6 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
                 LOGGER.warn(rover.toString() + " does not have valid set of coordinates. can not be " +
                         "deployed");
             }
-        }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            LOGGER.warn(e.getMessage(), e);
         }
         return GameStatus.createStatus(200, "All the rovers deployed successfully");
     }
