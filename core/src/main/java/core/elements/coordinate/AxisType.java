@@ -1,14 +1,17 @@
 package core.elements.coordinate;
 
 /**
- * Coordinate map value to coordinate type.
+ * CoordinateImpl map key - coordinate type.
+ * currently supports three dimensions.
+ * <p>
+ * TODO: to be later created at initialization from configuration file.
  */
-public enum CoordinateType {
+public enum AxisType {
     X("x-coordinate"), Y("y-coordinate"), Z("z-coordinate");
 
-    private String desc;
+    private final String description;
 
-    CoordinateType(String s) {
-        desc = s;
+    AxisType(String s) {
+        description = s;
     }
 }

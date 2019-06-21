@@ -1,17 +1,15 @@
 package core.elements.coordinate;
 
-import core.utilities.CoreUtils;
-
 import java.util.Map;
 
 /**
  * This class represents a coordinate of the system.
  */
-public class Coordinate implements GenericCoordinate {
+public class CoordinateImpl implements Coordinate {
 
     private final Map<AxisType, Integer> typeIntegerMap;
 
-    public Coordinate(Map<AxisType, Integer> typeIntegerMap) {
+    public CoordinateImpl(Map<AxisType, Integer> typeIntegerMap) {
         this.typeIntegerMap = typeIntegerMap;
     }
 
@@ -27,22 +25,28 @@ public class Coordinate implements GenericCoordinate {
 
     @Override
     public int hashCode() {
-        return 12;
+        return typeIntegerMap.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Coordinate)) {
+        if (!(obj instanceof CoordinateImpl)) {
             return false;
         }
-        Coordinate c = (Coordinate) obj;
+        CoordinateImpl c = (CoordinateImpl) obj;
         return this.getValues().equals(c.getValues());
     }
 
     @Override
     public String toString() {
-        return CoreUtils.format("x:{0} y:{1} ");
+        StringBuilder builder = new StringBuilder();
+        Map<AxisType, Integer> value = getValues();
+        builder.append("{");
+        for (Map.Entry<AxisType, Integer> entry : value.entrySet()) {
+            builder.append(entry.getKey().toString() + " : " + entry.getValue() + " ");
+        }
+        builder.append("}");
+        return builder.toString();
     }
-
 
 }
