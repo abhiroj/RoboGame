@@ -1,8 +1,4 @@
-Gaming as a service
-
-- Robo 2D is a web service that allows you to play a game in a multiplayer scenario.
-
-Use Case for the game component - 
+Use Case -
 
 1. Actor can put any number of robos on 2D Grid.
 2. Robo once placed successfully can start navigating in the grid, according to the direction specified by the actor.
