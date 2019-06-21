@@ -1,9 +1,11 @@
 package core.elements.rover;
 
+import core.consumer.CollectionConsumer;
+import core.consumer.MovementConsumer;
 import core.elements.coordinate.Coordinate;
 import core.exception.NoCoordinateFoundException;
-import core.manager.CollectionProvider;
-import core.manager.MovementProvider;
+import core.provider.CollectionProvider;
+import core.provider.MovementProvider;
 import core.utilities.CoreUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * Rover Implementation provides funtionalities to Rover Contract and Threading features from Runnable
  */
 //TODO:Add copyright
-public class RoverImpl implements Runnable, Rover {
+public class RoverImpl implements Runnable, Rover, MovementConsumer, CollectionConsumer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoverImpl.class);
     private final int MOVE_INTERVAL_SECONDS = 1000;

@@ -1,8 +1,6 @@
 package core.elements.rover;
 
 import core.elements.coordinate.Coordinate;
-import core.manager.CollectionProvider;
-import core.manager.MovementProvider;
 
 /**
  * Contract for functionalities that defines a generic rover.It should be able to activate, move and stop itself.
@@ -24,24 +22,6 @@ public interface Rover {
      * stops the rover from further moving.
      */
     void stop();
-
-    /**
-     * sets movement manager to which this rover talks to determine next move.
-     * pass null to unset.
-     * throws runtime exception if not implemented and tried to be used.
-     *
-     * @param movementProvider
-     */
-    void setMovementProvider(MovementProvider movementProvider);
-
-    /**
-     * sets collection provider the rover commands to make collection at the given coordinate
-     * pass null to unset.
-     * throws runtime exception if not implemented and tried to be used.
-     *
-     * @param collectionProvider
-     */
-    void setCollectionProvider(CollectionProvider collectionProvider);
 
     /**
      * get current location of this rover's on the playground.
