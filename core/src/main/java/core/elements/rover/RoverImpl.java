@@ -5,8 +5,12 @@ import core.exception.AppException;
 import core.exception.NoCoordinateFoundException;
 import core.manager.CollectionProvider;
 import core.manager.MovementProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Rover implements Runnable, GenericRover {
+public class RoverImpl implements Runnable, Rover {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoverImpl.class);
 
     private Coordinate coordinate;
     private final int id;
@@ -15,7 +19,7 @@ public class Rover implements Runnable, GenericRover {
     private boolean isActive = false;
     private CollectionProvider collector;
 
-    public Rover(int id) {
+    public RoverImpl(int id) {
         this.id = id;
     }
 
@@ -38,12 +42,13 @@ public class Rover implements Runnable, GenericRover {
             throw new AppException(this.toString() + " can not be activated without coordinates");
         }
         if (isActive) {
-            throw new AppException(this.toString() + " can not be activated again");
+            LOGGER.warn(this.toString() + " can not be activated again as it is on the move!");
+            return;
         }
         this.coordinate = coordinate;
         isActive = true;
         shouldRun = true;
-        System.out.println("everybody, buckle up please! " + this.toString() + " on the move.");
+        LOGGER.info("everybody, buckle up please! " + this.toString() + " on the move.");
         new Thread(this, this.toString()).start();
     }
 
@@ -59,12 +64,12 @@ public class Rover implements Runnable, GenericRover {
      */
     @Override
     public void move() {
-        System.out.println("Visited " + coordinate.toString() + "by " + this.toString());
+        LOGGER.info("Visited " + coordinate.toString() + "by " + this.toString());
         collector.collect(this.coordinate);
         try {
             coordinate = controller.nextMove(this.coordinate);
         } catch (NoCoordinateFoundException e) {
-            System.out.println(this.toString() + " stopping itself" + " because " + e.getMessage());
+            LOGGER.warn(this.toString() + " stopping itself" + " because " + e.getMessage());
             this.stop();
         }
     }
@@ -75,10 +80,10 @@ public class Rover implements Runnable, GenericRover {
     @Override
     public void stop() {
         if (!isActive) {
-            System.out.println("can not stop a rover which is not activated!");
+            LOGGER.warn("can not stop a rover which is not activated!");
             return;
         }
-        System.out.println("Pulling Aside!");
+        LOGGER.info("Pulling Aside!");
         shouldRun = false;
     }
 
@@ -87,27 +92,36 @@ public class Rover implements Runnable, GenericRover {
      *
      * @return CoordinateImpl
      */
-    public Coordinate getCurrentCoordinate() {
+    public Coordinate getCoordinate() {
         return coordinate;
+    }
+
+    /**
+     * set new location of the rover.
+     *
+     * @return CoordinateImpl
+     */
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
     /**
      * sets movement manager this rover talks to determine next move.
      * pass null to not set it.
      *
-     * @param handler
+     * @param movementProvider
      */
-    public void setMovementProvider(MovementProvider handler) {
-        this.controller = handler;
+    public void setMovementProvider(MovementProvider movementProvider) {
+        this.controller = movementProvider;
     }
 
     /**
      * sets collection provider the rover commands to make collection at the given coordinate
      *
-     * @param handler
+     * @param collectionProvider
      */
-    public void setCollectionProvider(CollectionProvider handler) {
-        this.collector = handler;
+    public void setCollectionProvider(CollectionProvider collectionProvider) {
+        this.collector = collectionProvider;
     }
 
     @Override
