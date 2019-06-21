@@ -7,12 +7,12 @@ import core.elements.coordinate.Coordinate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Shape2DImpl implements Shape {
+public class ShapeImpl implements Shape {
 
     private final Map<PropertyType, Object> propTypeObjectMap;
     private final Coordinate coordinate;
 
-    public Shape2DImpl(Coordinate coordinate) {
+    public ShapeImpl(Coordinate coordinate) {
         this.coordinate = coordinate;
         propTypeObjectMap = new HashMap<>();
         propTypeObjectMap.put(PropertyType.WEATHER, "22F");
