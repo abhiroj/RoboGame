@@ -1,11 +1,14 @@
 package core.exception;
 
-public class NoCoordinateFound extends AppException {
-    public NoCoordinateFound(String message) {
+/**
+ * Exception thrown if no further coordinate is found to make a next move.
+ */
+public class NoCoordinateFoundException extends AppException {
+    public NoCoordinateFoundException(String message) {
         super(message);
     }
 
-    public NoCoordinateFound(String message, Throwable t) {
+    public NoCoordinateFoundException(String message, Throwable t) {
         super(message, t);
     }
 }
