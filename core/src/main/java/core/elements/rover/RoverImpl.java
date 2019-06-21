@@ -1,17 +1,21 @@
 package core.elements.rover;
 
 import core.elements.coordinate.Coordinate;
-import core.exception.AppException;
 import core.exception.NoCoordinateFoundException;
 import core.manager.CollectionProvider;
 import core.manager.MovementProvider;
+import core.utilities.CoreUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Rover Implementation provides funtionalities to Rover Contract and Threading features from Runnable
+ */
+//TODO:Add copyright
 public class RoverImpl implements Runnable, Rover {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoverImpl.class);
-
+    private final int MOVE_INTERVAL_SECONDS = 1000;
     private Coordinate coordinate;
     private final int id;
     private boolean shouldRun = false;
@@ -38,9 +42,7 @@ public class RoverImpl implements Runnable, Rover {
      */
     @Override
     public void activate(Coordinate coordinate) {
-        if (coordinate == null) {
-            throw new AppException(this.toString() + " can not be activated without coordinates");
-        }
+        CoreUtils.required("Coordinate", coordinate);
         if (isActive) {
             LOGGER.warn(this.toString() + " can not be activated again as it is on the move!");
             return;
@@ -52,12 +54,14 @@ public class RoverImpl implements Runnable, Rover {
         new Thread(this, this.toString()).start();
     }
 
+
     /**
      * stops the current rover. Rover once stopped can not be restarted again.
      */
     public boolean isActive() {
         return isActive;
     }
+
 
     /**
      * determines a move of the rover
@@ -69,7 +73,7 @@ public class RoverImpl implements Runnable, Rover {
         try {
             coordinate = controller.nextMove(this.coordinate);
         } catch (NoCoordinateFoundException e) {
-            LOGGER.warn(this.toString() + " stopping itself" + " because " + e.getMessage());
+            LOGGER.warn(this.toString() + " stopping itself because " + e.getMessage(), e);
             this.stop();
         }
     }
@@ -129,8 +133,9 @@ public class RoverImpl implements Runnable, Rover {
         while (shouldRun) {
             move();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(MOVE_INTERVAL_SECONDS);
             } catch (InterruptedException e) {
+                LOGGER.warn(e.getMessage(), e);
                 e.printStackTrace();
             }
         }

@@ -5,6 +5,7 @@ import java.util.Map;
 /**
  * This class represents generic coordinate
  */
+//TODO:Add copyright
 public interface Coordinate {
 
     /**

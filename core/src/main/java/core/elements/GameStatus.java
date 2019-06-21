@@ -5,6 +5,7 @@ import core.utilities.CoreUtils;
 /**
  * supports different ways to present status of action done on the game
  */
+//TODO:Add copyright
 public class GameStatus {
 
     private final int code;

@@ -8,11 +8,11 @@ import core.elements.playground.Playground;
 import core.elements.rover.Rover;
 import core.exception.AppException;
 import core.exception.NoCoordinateFoundException;
+import core.factory.RoverFactory;
 import core.manager.CollectionProvider;
 import core.manager.GameManager;
 import core.manager.MovementProvider;
 import core.utilities.CoreUtils;
-import jdk.jshell.spi.ExecutionControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * CLIGameManager provides functionality to write the application for the CLI App.
+ */
 public class CLIGameManager implements GameManager, MovementProvider, CollectionProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CLIGameManager.class);
@@ -38,7 +41,13 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
 
     @Override
     public GameStatus createGame(Playground playground, int roverCount) {
-        return null;
+        try {
+            throw new UnsupportedOperationException("createGame to Random Rovers upto roverCount is not " +
+                    "implemented.");
+        } catch (UnsupportedOperationException e) {
+            LOGGER.warn(e.getMessage(), e);
+        }
+        return GameStatus.createStatus(404, "To implement.");
     }
 
     @Override
@@ -51,7 +60,11 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
 
     @Override
     public GameStatus addRovers(int roverCount) {
-        return null;
+        List<Rover> rovers = new ArrayList<>();
+        while (roverCount-- > 0) {
+            rovers.add(RoverFactory.createRover());
+        }
+        return addRovers(rovers);
     }
 
     @Override
@@ -69,9 +82,9 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
     @Override
     public GameStatus addRoversOnCoordinates(List<Coordinate> coordinates) {
         try {
-            throw new ExecutionControl.NotImplementedException("addRoversOnCoordinates is not implemented.");
-        } catch (ExecutionControl.NotImplementedException e) {
-            e.printStackTrace();
+            throw new UnsupportedOperationException("addRoversOnCoordinates is not implemented.");
+        } catch (UnsupportedOperationException e) {
+            LOGGER.warn(e.getStackTrace().toString(), e);
             throw new AppException(e);
         }
     }
@@ -86,8 +99,8 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
         int count = 0;
         for (Rover rover : roverList) {
             if (rovers.contains(rover)) {
-                rovers.remove(rover);
                 rover.stop();
+                rovers.remove(rover);
                 count++;
             }
         }
@@ -97,9 +110,9 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
     @Override
     public GameStatus removeRoversFromCoordinates(List<Coordinate> coordinates) {
         try {
-            throw new ExecutionControl.NotImplementedException("removeRoversFromCoordinates is not implemented.");
-        } catch (ExecutionControl.NotImplementedException e) {
-            e.printStackTrace();
+            throw new UnsupportedOperationException("removeRoversFromCoordinates is not implemented.");
+        } catch (UnsupportedOperationException e) {
+            LOGGER.warn(e.getMessage(), e);
             throw new AppException(e);
         }
     }
@@ -133,7 +146,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.warn(e.getMessage(), e);
         }
         return GameStatus.createStatus(200, "All the rovers deployed successfully");
     }
@@ -205,15 +218,15 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
     @Override
     public synchronized Coordinate nextMove(Coordinate coordinate, List<Coordinate> diffCoordinates) {
         try {
-            throw new ExecutionControl.NotImplementedException("nextMove is not implemented.");
-        } catch (ExecutionControl.NotImplementedException e) {
-            e.printStackTrace();
+            throw new UnsupportedOperationException("nextMove is not implemented.");
+        } catch (UnsupportedOperationException e) {
+            LOGGER.warn(e.getMessage(), e);
             throw new AppException(e);
         }
     }
 
     @Override
-    public void collect(Coordinate c) {
+    public synchronized void collect(Coordinate c) {
         collectedProps.put(c, this.playground.getShapeAtCoordinate(c).getProperties());
     }
 

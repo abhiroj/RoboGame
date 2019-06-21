@@ -4,9 +4,7 @@ import core.elements.playground.Playground;
 import core.elements.playground.Playground2DImpl;
 import core.elements.shape.Shape;
 
-/**
- * \
- */
+//TODO:Add copyright
 public class PlaygroundFactory {
 
     private PlaygroundFactory() {

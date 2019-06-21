@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * objects that traverse playground consume MovementProvider to get next moveable coordinates
  */
+//TODO:Add copyright
 public interface MovementProvider {
 
     /**

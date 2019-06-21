@@ -5,6 +5,7 @@ import core.exception.AppException;
 import java.text.MessageFormat;
 import java.util.Objects;
 
+//TODO:Add copyright
 public final class CoreUtils {
 
     private CoreUtils() {

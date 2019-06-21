@@ -7,6 +7,7 @@ import java.util.*;
 /**
  * Encapsulates the operations to be done on coordinates
  */
+//TODO:Add copyright
 public final class CoordinateUtils {
 
     private CoordinateUtils() {

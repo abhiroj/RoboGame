@@ -7,6 +7,7 @@ import core.elements.coordinate.Coordinate;
 import java.util.HashMap;
 import java.util.Map;
 
+//TODO:Add copyright
 public class ShapeImpl implements Shape {
 
     private final Map<PropertyType, Object> propTypeObjectMap;

@@ -1,5 +1,6 @@
 package core.exception;
 
+//TODO:Add copyright
 public class AppException extends RuntimeException {
 
     public AppException(String message) {

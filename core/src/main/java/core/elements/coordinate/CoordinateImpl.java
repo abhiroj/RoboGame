@@ -5,6 +5,7 @@ import java.util.Map;
 /**
  * This class represents a coordinate of the system.
  */
+//TODO:Add copyright
 public class CoordinateImpl implements Coordinate {
 
     private final Map<AxisType, Integer> typeIntegerMap;

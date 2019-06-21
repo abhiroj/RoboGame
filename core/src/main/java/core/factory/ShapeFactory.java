@@ -8,6 +8,7 @@ import core.elements.shape.ShapeImpl;
 import java.util.Map;
 import java.util.TreeMap;
 
+//TODO:Add copyright
 public class ShapeFactory {
 
     private ShapeFactory() {
