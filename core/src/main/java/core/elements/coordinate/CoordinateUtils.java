@@ -2,7 +2,10 @@ package core.elements.coordinate;
 
 import core.utilities.CoreUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Encapsulates the operations to be done on coordinates
@@ -16,13 +19,16 @@ public final class CoordinateUtils {
 
     /**
      * determines next possible coordinates based on jumpFactor.
-     * for jumpFactor=1, returns adjacent coordinates.
+     * for jumpFactor=1, returns adjacent coordinates. For negative jump factor, the order of occurence will reverse.
      *
      * @param coordinate
      * @return
      */
     public static List<Coordinate> nextPossibleCoordinates(Coordinate coordinate, int jumpFactor) {
         CoreUtils.required("Coordinate", coordinate);
+        if (jumpFactor == 0) {
+            return List.of(coordinate);
+        }
         List<Coordinate> nextMoves = new ArrayList();
         Map<AxisType, Integer> valueAtAxis = coordinate.getValues();
         for (AxisType key : valueAtAxis.keySet()) {
