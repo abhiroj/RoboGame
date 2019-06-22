@@ -2,7 +2,7 @@ import core.elements.playground.Playground;
 import core.elements.rover.Rover;
 import core.factory.PlaygroundFactory;
 import core.factory.RoverFactory;
-import core.factory.ShapeFactory;
+import core.factory.ShapesFactory;
 import core.manager.GameManager;
 import manager.CLIGameManager;
 
@@ -18,7 +18,7 @@ public class AppRun {
     public static void main(String[] args) throws InterruptedException {
         GameManager gameManager = new CLIGameManager();
         Playground playground =
-                PlaygroundFactory.get2DPlayground(ShapeFactory.request2DShapeAsArray(5,
+                PlaygroundFactory.get2DPlayground(ShapesFactory.getArrayRepresentation(5,
                         4));
         List<Rover> rovers = List.of(RoverFactory.createRover(), RoverFactory.createRover());
         gameManager.createGame(playground, rovers);
