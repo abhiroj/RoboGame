@@ -26,7 +26,12 @@ public class CoordinateImpl implements Coordinate {
 
     @Override
     public int hashCode() {
-        return typeIntegerMap.hashCode();
+        int hashCode = 0;
+        int power = 1;
+        for (Integer value : typeIntegerMap.values()) {
+            hashCode += (value * Math.pow(2, power++));
+        }
+        return hashCode;
     }
 
     @Override
