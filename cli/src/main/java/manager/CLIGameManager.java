@@ -1,7 +1,6 @@
 package manager;
 
 import core.elements.GameStatus;
-import core.elements.Properties;
 import core.elements.coordinate.Coordinate;
 import core.elements.coordinate.CoordinateUtils;
 import core.elements.playground.Playground;
@@ -9,17 +8,14 @@ import core.elements.rover.Rover;
 import core.exception.AppException;
 import core.exception.NoCoordinateFoundException;
 import core.factory.RoverFactory;
-import core.provider.CollectionProvider;
 import core.manager.GameManager;
+import core.provider.CollectionProvider;
 import core.provider.MovementProvider;
 import core.utilities.CoreUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * CLIGameManager provides functionality to write the application for the CLI App.
@@ -171,7 +167,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
         StringBuilder builder = new StringBuilder();
         for (Coordinate c : coordinates) {
             builder.append(collectedProps.containsKey(c) ?
-                    c.toString() + " visited " + collectedProps.get(c).get() + " \n" :
+                    c.toString() + " visited " + collectedProps.get(c).toString() + " \n" :
                     c.toString() +
                             " not " +
                             "visited \n");
