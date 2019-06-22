@@ -1,3 +1,7 @@
+<h4>Robo Game</h4>
+[![Build Status](https://travis-ci.org/abhiroj/RoboGame.svg?branch=abstract-robo)](https://travis-ci.org/abhiroj/RoboGame)
+[![codecov](https://codecov.io/gh/abhiroj/RoboGame/branch/abstract-robo/graph/badge.svg)](https://codecov.io/gh/abhiroj/RoboGame)
+<hr/>
 <h3>Use Case -</h3>
 
   1. Actor can put any number of robos on 2D Grid.
