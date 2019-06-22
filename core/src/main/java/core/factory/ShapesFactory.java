@@ -15,7 +15,7 @@ public class ShapeFactory {
         //This class serves as a static factory for creation of shapes.
     }
 
-    public static Shape[][] request2DShapeAsArray(int x, int y) {
+    public static Shape[][] getArrayRepresentation(int x, int y) {
         Shape[][] shape2D = new ShapeImpl[x][y];
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
