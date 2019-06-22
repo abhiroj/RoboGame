@@ -8,6 +8,9 @@ import core.utilities.CoreUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The playground is implemented as an adjacency array
+ */
 public class Playground2DImpl implements Playground {
 
     private final Shape[][] shape2D;

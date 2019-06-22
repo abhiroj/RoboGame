@@ -9,16 +9,23 @@ import java.util.Map;
 import java.util.TreeMap;
 
 //TODO:Add copyright
-public class ShapeFactory {
+public class ShapesFactory {
 
-    private ShapeFactory() {
+    private ShapesFactory() {
         //This class serves as a static factory for creation of shapes.
     }
 
-    public static Shape[][] getArrayRepresentation(int x, int y) {
-        Shape[][] shape2D = new ShapeImpl[x][y];
-        for (int i = 0; i < x; i++) {
-            for (int j = 0; j < y; j++) {
+    /**
+     * gets a two dimensional array representation of shapes
+     *
+     * @param rows
+     * @param columns
+     * @return
+     */
+    public static Shape[][] getArrayRepresentation(int rows, int columns) {
+        Shape[][] shape2D = new ShapeImpl[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 Map<AxisType, Integer> treeMap = new TreeMap<>();
                 treeMap.put(AxisType.X, i);
                 treeMap.put(AxisType.Y, j);

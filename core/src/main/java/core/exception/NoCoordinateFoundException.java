@@ -12,4 +12,8 @@ public class NoCoordinateFoundException extends AppException {
     public NoCoordinateFoundException(String message, Throwable t) {
         super(message, t);
     }
+
+    public NoCoordinateFoundException(Throwable t) {
+        super(t);
+    }
 }

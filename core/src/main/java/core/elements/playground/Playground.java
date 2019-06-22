@@ -5,6 +5,9 @@ import core.elements.shape.Shape;
 
 import java.util.List;
 
+/**
+ * Playground can be implented as adjacency list or adjacency array
+ */
 public interface Playground {
 
     /**

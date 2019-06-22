@@ -11,8 +11,8 @@ public class PlaygroundFactory {
         //This gets a new instance of a playground for ever call
     }
 
-    public static Playground get2DPlayground(Shape[][] shape2D) {
-        return new Playground2DImpl(shape2D);
+    public static Playground get2DPlayground(Shape[][] shapes2D) {
+        return new Playground2DImpl(shapes2D);
     }
 
 
