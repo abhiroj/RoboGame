@@ -1,34 +1,42 @@
 package core.elements.shape;
 
-import core.elements.Properties;
 import core.elements.PropertyType;
 import core.elements.coordinate.Coordinate;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Properties;
 
 //TODO:Add copyright
+
+/**
+ * A basic implementation of shape class
+ */
 public class ShapeImpl implements Shape {
 
-    private final Map<PropertyType, Object> propTypeObjectMap;
+    private Properties properties;
     private final Coordinate coordinate;
 
+    /**
+     * The constructor sets some properties by default. Default properties can be replaced using setters.
+     *
+     * @param coordinate
+     */
     public ShapeImpl(Coordinate coordinate) {
         this.coordinate = coordinate;
-        propTypeObjectMap = new HashMap<>();
-        propTypeObjectMap.put(PropertyType.WEATHER, "22F");
-        propTypeObjectMap.put(PropertyType.HUMIDITY, "31H");
-        propTypeObjectMap.put(PropertyType.UVRAD, "unit");
+        properties = new Properties();
+        properties.put(PropertyType.WEATHER, "22F");
+        properties.put(PropertyType.HUMIDITY, "31H");
+        properties.put(PropertyType.UVRAD, "unit");
+    }
+
+
+    @Override
+    public void setProperties(Properties properties) {
+        this.properties = properties;
     }
 
     @Override
     public Properties getProperties() {
-        return new Properties() {
-            @Override
-            public String get() {
-                return propTypeObjectMap.toString();
-            }
-        };
+        return properties;
     }
 
     @Override

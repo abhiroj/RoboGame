@@ -1,7 +1,8 @@
 package core.elements.shape;
 
-import core.elements.Properties;
 import core.elements.coordinate.Coordinate;
+
+import java.util.Properties;
 
 /**
  * defines abstract shape contract for the system.
@@ -11,6 +12,8 @@ import core.elements.coordinate.Coordinate;
 public interface Shape {
 
     Properties getProperties();
+
+    void setProperties(Properties properties);
 
     Coordinate getCoordinate();
 
