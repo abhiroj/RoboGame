@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 public class GameStatusTest {
 
     private GameStatus gameStatus;
-    private final int testCode = 200;
+    private final GameStatus.Code testCode = GameStatus.Code.OK;
     private final String testMessage = "This is a test message";
 
     @Test

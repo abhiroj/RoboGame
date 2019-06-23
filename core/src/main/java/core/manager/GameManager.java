@@ -15,7 +15,7 @@ import java.util.List;
 public interface GameManager {
 
     /**
-     * @apiNote creates a game by deploying roverCount number of rovers on the playground
+     * @apiNote creates a game by deploying roverCount number of rovers on the playground randomly
      */
     GameStatus createGame(Playground playground, int roverCount);
 
@@ -35,10 +35,9 @@ public interface GameManager {
     /**
      * remove the playground
      *
-     * @param playground
      * @return
      */
-    GameStatus removePlayground(Playground playground);
+    GameStatus removePlayground();
 
     /**
      * System begins playing a game

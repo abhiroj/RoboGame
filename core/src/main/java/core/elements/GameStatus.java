@@ -8,10 +8,20 @@ import core.utilities.CoreUtils;
 //TODO:Add copyright
 public class GameStatus {
 
-    private final int code;
+    public enum Code {
+        OK(200);
+
+        private final int code;
+
+        Code(int i) {
+            this.code = i;
+        }
+    }
+
+    private final Code code;
     private final String message;
 
-    private GameStatus(int code, String message) {
+    private GameStatus(Code code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -21,7 +31,7 @@ public class GameStatus {
      *
      * @return
      */
-    public int getCode() {
+    public Code getCode() {
         return code;
     }
 
@@ -41,10 +51,9 @@ public class GameStatus {
      * @param message
      * @return
      */
-    public static GameStatus createStatus(int code, String message) {
+    public static GameStatus createStatus(Code code, String message) {
         CoreUtils.required("Status Code", code);
         CoreUtils.required("Status Message", message);
-
         return new GameStatus(code, message);
     }
 

@@ -18,4 +18,13 @@ public interface Coordinate {
      */
     Map<AxisType, Integer> getValues();
 
+    /**
+     * static factory enables instance creation of different coordinates
+     *
+     * @return
+     */
+    static Coordinate get(Map<AxisType, Integer> coordinateMap) {
+        return new CoordinateImpl(coordinateMap);
+    }
+
 }
