@@ -42,8 +42,8 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
                     "implemented.");
         } catch (UnsupportedOperationException e) {
             LOGGER.warn(e.getMessage(), e);
+            throw new AppException(e);
         }
-        return GameStatus.createStatus(404, "To implement.");
     }
 
     @Override
@@ -51,7 +51,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
         setPlayground(playground);
         for (Rover rover : rovers)
             this.rovers.add(rover);
-        return GameStatus.createStatus(200, "Create game successful");
+        return GameStatus.createStatus(GameStatus.Code.OK, "Create game successful");
     }
 
     @Override
@@ -72,7 +72,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
                 count++;
             }
         }
-        return GameStatus.createStatus(200, "Added " + count + "rovers to the game");
+        return GameStatus.createStatus(GameStatus.Code.OK, "Added " + count + "rovers to the game");
     }
 
     @Override
@@ -99,14 +99,16 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
     @Override
     public GameStatus removeRovers(List<Rover> roverList) {
         int count = 0;
+        List<Rover> roversToBeRemoved = new ArrayList<>();
         for (Rover rover : roverList) {
             if (rovers.contains(rover)) {
                 rover.stop();
-                rovers.remove(rover);
+                roversToBeRemoved.add(rover);
                 count++;
             }
         }
-        return GameStatus.createStatus(200, "Removed " + count + " rovers from the game");
+        roverList.removeAll(roversToBeRemoved);
+        return GameStatus.createStatus(GameStatus.Code.OK, "Removed " + count + " rovers from the game");
     }
 
     @Override
@@ -123,30 +125,34 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
     public GameStatus setPlayground(Playground playground) {
         CoreUtils.required("Playground", playground);
         this.playground = playground;
-        return GameStatus.createStatus(200, "Game equipped with " + playground.toString());
+        return GameStatus.createStatus(GameStatus.Code.OK, "Game equipped with " + playground.toString());
     }
 
     @Override
-    public GameStatus removePlayground(Playground playground) {
+    public GameStatus removePlayground() {
         this.playground = null;
-        return GameStatus.createStatus(200, "Playground removed from game");
+        return GameStatus.createStatus(GameStatus.Code.OK, "Playground removed from game");
     }
 
     @Override
     public GameStatus startGame() {
+        validatePlayground();
         validateRovers();
         for (Rover rover : rovers) {
             rover.setMovementProvider(this);
             rover.setCollectionProvider(this);
-            if (rover.getCoordinate() == null) {
+            if (!isValid(rover.getCoordinate())) {
                 rover.activate(getFirstNonVisitedCoordinate());
                 continue;
             } else {
-                LOGGER.warn(rover.toString() + " does not have valid set of coordinates. can not be " +
-                        "deployed");
+                rover.activate(rover.getCoordinate());
             }
         }
-        return GameStatus.createStatus(200, "All the rovers deployed successfully");
+        return GameStatus.createStatus(GameStatus.Code.OK, "All the rovers deployed successfully");
+    }
+
+    private void validatePlayground() {
+        CoreUtils.required("Playground", this.playground);
     }
 
     private void validateRovers() {
@@ -172,7 +178,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
                             " not " +
                             "visited \n");
         }
-        return GameStatus.createStatus(200, builder.toString());
+        return GameStatus.createStatus(GameStatus.Code.OK, builder.toString());
     }
 
     private Coordinate getFirstNonVisitedCoordinate() {
@@ -191,14 +197,13 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
 
 
     private boolean isInBounds(Coordinate coordinate) {
-        if (coordinate == null) return false;
         List<Coordinate> groundCoordinates = this.playground.getCoordinates();
         boolean res = groundCoordinates.contains(coordinate);
         return res;
     }
 
     private boolean isValid(Coordinate c) {
-        return isInBounds(c) && !isAlloted(c);
+        return !Objects.isNull(c) && isInBounds(c) && !isAlloted(c);
     }
 
     @Override
