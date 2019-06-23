@@ -15,8 +15,10 @@ public class AppRun {
 
     public static final int INTERVAL_SECONDS = 20000;
 
+    private static GameManager gameManager;
+
     public static void main(String[] args) throws InterruptedException {
-        GameManager gameManager = new CLIGameManager();
+        gameManager = new CLIGameManager();
         Playground playground =
                 PlaygroundFactory.get2DPlayground(ShapesFactory.getArrayRepresentation(5,
                         4));
@@ -24,6 +26,7 @@ public class AppRun {
         gameManager.createGame(playground, rovers);
         gameManager.startGame();
         //TODO: remove thread.sleep and add an event listener to listen on when game is finished.
+        //TODO: INTERVAL impacts unit test which should be short and quick. To be fixed
         Thread.sleep(INTERVAL_SECONDS);
         System.out.println(gameManager.getStatus().getCode() + "\n" + gameManager.getStatus().getMessage());
     }
