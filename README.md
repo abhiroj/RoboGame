@@ -1,3 +1,8 @@
+<h4>Robo Game</h4>
+<a href="https://codecov.io/gh/abhiroj/RoboGame">
+  <img src="https://codecov.io/gh/abhiroj/RoboGame/branch/abstract-robo/graph/badge.svg" />
+</a>
+<hr/>
 <h3>Use Case -</h3>
 
   1. Actor can put any number of robos on 2D Grid.
