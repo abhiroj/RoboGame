@@ -11,10 +11,10 @@ public class GameStatus {
     public enum Code {
         OK(200);
 
-        private final int code;
+        private final int statusCode;
 
         Code(int i) {
-            this.code = i;
+            this.statusCode = i;
         }
     }
 
