@@ -6,7 +6,7 @@ import core.elements.shape.SandboxShape;
 import java.util.List;
 
 /**
- * Playground can be implented as adjacency list or adjacency array
+ * Playground can be implemented as adjacency list or adjacency array
  */
 public interface Playground {
 

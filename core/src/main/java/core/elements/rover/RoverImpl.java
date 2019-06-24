@@ -138,7 +138,6 @@ public class RoverImpl implements Runnable, Rover, MovementConsumer, CollectionC
                 Thread.sleep(MOVE_INTERVAL_SECONDS);
             } catch (InterruptedException e) {
                 LOGGER.warn(e.getMessage(), e);
-                e.printStackTrace();
             }
         }
     }
