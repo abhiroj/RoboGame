@@ -1,6 +1,7 @@
 package core.manager;
 
 import core.elements.GameStatus;
+import core.elements.coordinate.Coordinate;
 import core.elements.playground.Playground;
 import core.elements.rover.Rover;
 
@@ -10,20 +11,21 @@ import java.util.List;
  * provides the functionality to do actions on the game.
  * methods returns the status of corresponding action back to user
  */
+//TODO:Add copyright
 public interface GameManager {
 
     /**
-     * @apiNote creates a game by deploying rovers on the playground
+     * @apiNote creates a game by deploying roverCount number of rovers on the playground randomly
      */
     GameStatus createGame(Playground playground, int roverCount);
 
     /**
-     * @apiNote creates a game by deploying rovers on the playground
+     * @apiNote creates a game by deploying rovers on the playground specified in the list of rovers.
      */
     GameStatus createGame(Playground playground, List<Rover> rovers);
 
     /**
-     * give the game a playground to play upon
+     * sets the playground
      *
      * @param playground
      * @return
@@ -33,10 +35,9 @@ public interface GameManager {
     /**
      * remove the playground
      *
-     * @param playground
      * @return
      */
-    GameStatus removePlayground(Playground playground);
+    GameStatus removePlayground();
 
     /**
      * System begins playing a game
@@ -59,7 +60,7 @@ public interface GameManager {
 
 
     /**
-     * add @param roverCount number of rovers in the game given the rover count
+     * add roverCount number of rovers in the game given the rover count
      *
      * @param
      * @return
@@ -75,7 +76,15 @@ public interface GameManager {
     GameStatus addRovers(List<Rover> rovers);
 
     /**
-     * remove @param roverCount number of rovers form the game
+     * add rovers in the game specifically on the coordinates mentioned in the coordinates.
+     *
+     * @param
+     * @return
+     */
+    GameStatus addRoversOnCoordinates(List<Coordinate> coordinates);
+
+    /**
+     * remove any roverCount number of rovers from the game
      *
      * @param
      * @return
@@ -83,8 +92,19 @@ public interface GameManager {
     GameStatus removeRovers(int roverCount);
 
     /**
+     * remove rovers specified in rover list to be removed from the game
+     *
      * @param
      * @return
      */
     GameStatus removeRovers(List<Rover> roverList);
+
+
+    /**
+     * remove rovers from coordinates specified in the list.
+     *
+     * @param
+     * @return
+     */
+    GameStatus removeRoversFromCoordinates(List<Coordinate> coordinates);
 }

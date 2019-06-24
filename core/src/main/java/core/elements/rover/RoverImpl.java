@@ -1,105 +1,149 @@
 package core.elements.rover;
 
+import core.consumer.CollectionConsumer;
+import core.consumer.MovementConsumer;
 import core.elements.coordinate.Coordinate;
-import core.exception.AppException;
-import core.exception.NoCoordinateFound;
-import core.manager.CollectionProvider;
-import core.manager.MovementProvider;
+import core.exception.NoCoordinateFoundException;
+import core.provider.CollectionListener;
+import core.provider.MovementListener;
+import core.utilities.CoreUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class RoverImpl implements Rover, Runnable {
+/**
+ * Rover Implementation provides funtionalities to Rover Contract and Threading features from Runnable
+ */
+//TODO:Add copyright
+public class RoverImpl implements Runnable, Rover, MovementConsumer, CollectionConsumer {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoverImpl.class);
+    private final int MOVE_INTERVAL_SECONDS = 1000;
     private Coordinate coordinate;
     private final int id;
     private boolean shouldRun = false;
-    private MovementProvider controller;
+    private MovementListener controller;
     private boolean isActive = false;
-    private CollectionProvider collector;
+    private CollectionListener collector;
 
     public RoverImpl(int id) {
         this.id = id;
     }
 
-    @Override
+    /**
+     * get current rovers Id.
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
-    @Override
-    public void activate() {
-        activate(coordinate);
-    }
-
+    /**
+     * activate this rover to tread on the given coordinates.
+     * Throws runtime exception.
+     */
     @Override
     public void activate(Coordinate coordinate) {
-        if (coordinate == null) {
-            throw new AppException(this.toString() + " can not be activated without coordinates");
-        }
+        CoreUtils.required("Coordinate", coordinate);
         if (isActive) {
-            throw new AppException(this.toString() + " can not be activated again");
+            LOGGER.warn(this.toString() + " can not be activated again as it is on the move!");
+            return;
         }
         this.coordinate = coordinate;
         isActive = true;
         shouldRun = true;
-        System.out.println("everybody, buckle up please!" + this.toString() + " on the move.");
+        LOGGER.info("everybody, buckle up please! " + this.toString() + " on the move.");
         new Thread(this, this.toString()).start();
     }
 
+
+    /**
+     * stops the current rover. Rover once stopped can not be restarted again.
+     */
     public boolean isActive() {
         return isActive;
     }
 
+
+    /**
+     * determines a move of the rover
+     */
     @Override
     public void move() {
-        System.out.println("Visited " + coordinate.toString() + "by " + this.toString());
+        LOGGER.info("Visited " + coordinate.toString() + "by " + this.toString());
         collector.collect(this.coordinate);
         try {
             coordinate = controller.nextMove(this.coordinate);
-        } catch (NoCoordinateFound e) {
-            System.out.println(this.toString() + " stopping itself" + " because " + e.getMessage());
+        } catch (NoCoordinateFoundException e) {
+            LOGGER.warn(this.toString() + " stopping itself because " + e.getMessage(), e);
             this.stop();
         }
     }
 
+    /**
+     * stops the rover from further moving.
+     */
     @Override
     public void stop() {
         if (!isActive) {
-            System.out.println("can not stop a rover which is not activated!");
+            LOGGER.warn("can not stop a rover which is not activated!");
             return;
         }
-        System.out.println("Pulling Aside!");
+        LOGGER.info("Pulling Aside!");
         shouldRun = false;
     }
 
-    @Override
-    public Coordinate getCurrentCoordinate() {
+    /**
+     * get current location of the rover.
+     *
+     * @return CoordinateImpl
+     */
+    public Coordinate getCoordinate() {
         return coordinate;
     }
 
-    @Override
-    public void setMovementProvider(MovementProvider handler) {
-        this.controller = handler;
+    /**
+     * set new location of the rover.
+     *
+     * @return CoordinateImpl
+     */
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
-    @Override
-    public void setCollectionProvider(CollectionProvider handler) {
-        this.collector = handler;
+    /**
+     * sets movement manager this rover talks to determine next move.
+     * pass null to not set it.
+     *
+     * @param movementProvider
+     */
+    public void setMovementProvider(MovementListener movementProvider) {
+        this.controller = movementProvider;
     }
 
+    /**
+     * sets collection provider the rover commands to make collection at the given coordinate
+     *
+     * @param collectionProvider
+     */
+    public void setCollectionProvider(CollectionListener collectionProvider) {
+        this.collector = collectionProvider;
+    }
 
     @Override
     public void run() {
         while (shouldRun) {
             move();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(MOVE_INTERVAL_SECONDS);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.warn(e.getMessage(), e);
             }
         }
     }
 
     @Override
     public String toString() {
-        return "Rover " + this.getId();
+        return "Rover = " + this.getId();
     }
 }

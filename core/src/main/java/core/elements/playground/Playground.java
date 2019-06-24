@@ -1,25 +1,28 @@
 package core.elements.playground;
 
 import core.elements.coordinate.Coordinate;
-import core.elements.shape.Shape;
+import core.elements.shape.SandboxShape;
 
 import java.util.List;
 
+/**
+ * Playground can be implemented as adjacency list or adjacency array
+ */
 public interface Playground {
 
     /**
-     * get the coordinates playground is based upon.
+     * get the layout of the playground.
      *
      * @return
      */
     List<Coordinate> getCoordinates();
 
     /**
-     * get Shape present at the coordinate
+     * get SandboxShape present at the coordinate
      *
      * @param c
      * @return
      */
-    Shape getShapeAtCoordinate(Coordinate c);
+    SandboxShape getShapeAtCoordinate(Coordinate c);
 
 }

@@ -2,28 +2,18 @@ package core.factory;
 
 import core.elements.playground.Playground;
 import core.elements.playground.Playground2DImpl;
-import core.elements.shape.Shape;
+import core.elements.shape.SandboxShape;
 
-/**
- * Singleton Playground Factory
- */
+//TODO:Add copyright
 public class PlaygroundFactory {
 
-    private static PlaygroundFactory playgroundFactory = null;
-
     private PlaygroundFactory() {
-
+        //This gets a new instance of a playground for ever call
     }
 
-    public Playground get2DPlayground(Shape[][] shape2D) {
-        return new Playground2DImpl(shape2D);
+    public static Playground get2DPlayground(SandboxShape[][] shapes2D) {
+        return new Playground2DImpl(shapes2D);
     }
 
-    public static PlaygroundFactory getInstance() {
-        if (playgroundFactory == null) {
-            playgroundFactory = new PlaygroundFactory();
-        }
-        return playgroundFactory;
-    }
 
 }

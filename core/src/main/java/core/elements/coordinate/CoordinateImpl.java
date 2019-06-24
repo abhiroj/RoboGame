@@ -1,58 +1,37 @@
 package core.elements.coordinate;
 
-import core.elements.DimensionType;
-import core.exception.AppException;
-import core.utilities.CoreUtils;
-
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Map;
 
+/**
+ * This class represents a coordinate of the system.
+ */
+//TODO:Add copyright
 public class CoordinateImpl implements Coordinate {
 
-    private int x;
-    private int y;
-    private DimensionType dimension;
+    private final Map<AxisType, Integer> typeIntegerMap;
 
-    public CoordinateImpl(int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.dimension = DimensionType.TWOD;
+    public CoordinateImpl(Map<AxisType, Integer> typeIntegerMap) {
+        this.typeIntegerMap = typeIntegerMap;
     }
 
+    /**
+     * return a map of axis type which can be represented conventionally as x,y,z or in terms of latitude or longitude
+     *
+     * @return
+     */
     @Override
-    public int getX() {
-        return this.x;
-    }
-
-    @Override
-    public int getY() {
-        return this.y;
-    }
-
-    @Override
-    public int getZ() {
-        throw new AppException("Z-Axis not supported by " + this.dimension.valueOf());
-    }
-
-    @Override
-    public Map<CoordinateType, Integer> getCoordinates() {
-        return Map.of(CoordinateType.X, x, CoordinateType.Y, y);
-    }
-
-    @Override
-    public DimensionType getDimensionType() {
-        return dimension;
+    public Map<AxisType, Integer> getValues() {
+        return typeIntegerMap;
     }
 
     @Override
     public int hashCode() {
-        if (this.dimension.equals(DimensionType.TWOD)) {
-            int var1 = x * 10 + y;
-            return var1;
+        int hashCode = 0;
+        int power = 1;
+        for (Integer value : typeIntegerMap.values()) {
+            hashCode += (value * Math.pow(2, power++));
         }
-        return x * 10 + y;
+        return hashCode;
     }
 
     @Override
@@ -60,37 +39,20 @@ public class CoordinateImpl implements Coordinate {
         if (!(obj instanceof CoordinateImpl)) {
             return false;
         }
-        Coordinate c = (Coordinate) obj;
-        if (this.getDimensionType() != c.getDimensionType()) {
-            throw new AppException("can not compare " + this.getDimensionType().valueOf() + " with " + c.getDimensionType().valueOf(), new InputMismatchException());
-        }
-        return this.getCoordinates().equals(c.getCoordinates());
+        CoordinateImpl c = (CoordinateImpl) obj;
+        return this.getValues().equals(c.getValues());
     }
 
     @Override
     public String toString() {
-        return CoreUtils.format("x:{0} y:{1} ", x, y);
+        StringBuilder builder = new StringBuilder();
+        Map<AxisType, Integer> value = getValues();
+        builder.append("{");
+        for (Map.Entry<AxisType, Integer> entry : value.entrySet()) {
+            builder.append(entry.getKey().toString() + " : " + entry.getValue() + " ");
+        }
+        builder.append("}");
+        return builder.toString();
     }
-
-    @Override
-    public List<Coordinate> nextPossibleCoordinates() {
-        List moves = new ArrayList();
-        moves.addAll(getForwardCoordinates());
-        moves.addAll(getBackwardCoordinates());
-        return moves;
-    }
-
-    private List<Coordinate> getForwardCoordinates() {
-        Coordinate f1 = new CoordinateImpl(this.x + 1, this.y);
-        Coordinate f2 = new CoordinateImpl(this.x, this.y + 1);
-        return List.of(f1, f2);
-    }
-
-    private List<Coordinate> getBackwardCoordinates() {
-        Coordinate f1 = new CoordinateImpl(this.x - 1, this.y);
-        Coordinate f2 = new CoordinateImpl(this.x, this.y - 1);
-        return List.of(f1, f2);
-    }
-
 
 }

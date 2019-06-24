@@ -5,10 +5,11 @@ import core.exception.AppException;
 import java.text.MessageFormat;
 import java.util.Objects;
 
+//TODO:Add copyright
 public final class CoreUtils {
 
     private CoreUtils() {
-
+        //this class provides support methods for the module
     }
 
     public static String format(String format, Object... args) {

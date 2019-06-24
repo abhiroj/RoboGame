@@ -1,35 +1,26 @@
 package core.elements.rover;
 
-import core.manager.CollectionProvider;
-import core.manager.MovementProvider;
+import core.consumer.CollectionConsumer;
+import core.consumer.MovementConsumer;
 import core.elements.coordinate.Coordinate;
 
-public interface Rover {
+/**
+ * Contract for functionalities that defines a generic rover.It should be able to activate, move and stop itself.
+ * Functional contract for a rover object to be used in the system
+ */
+public interface Rover extends MovementConsumer, CollectionConsumer {
 
     /**
-     * get current rovers Id.
-     *
-     * @return
+     * activate this rover to move.
      */
-    int getId();
+    void activate(Coordinate coordinate);
 
     /**
-     * get rover's status if it is active or not.
+     * Returns status of Rover where rover is active or not.
      *
      * @return
      */
     boolean isActive();
-
-    /**
-     * activate this rover to tread.
-     * Throws runtime exception if coordinates are not set.
-     */
-    void activate();
-
-    /**
-     * activate this rover to tread on the given coordinates
-     */
-    void activate(Coordinate coordinate);
 
     /**
      * determines a move of the rover
@@ -37,30 +28,21 @@ public interface Rover {
     void move();
 
     /**
-     * stops the current rover. Rover in stop phase can not be restarted again.
+     * stops the rover from further moving.
      */
     void stop();
 
     /**
-     * get current location
+     * get current location of this rover's on the playground.
      *
-     * @return Coordinate
+     * @return
      */
-    Coordinate getCurrentCoordinate();
+    Coordinate getCoordinate();
 
     /**
-     * Sets Movement Provider
+     * set new location of this rover's on the playground.
      *
-     * @param handler
+     * @return
      */
-    void setMovementProvider(MovementProvider handler);
-
-    /**
-     * Sets Collection Provider
-     *
-     * @param handler
-     */
-    void setCollectionProvider(CollectionProvider handler);
-
-
+    void setCoordinate(Coordinate coordinate);
 }

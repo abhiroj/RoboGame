@@ -1,28 +1,33 @@
 package manager;
 
 import core.elements.GameStatus;
-import core.elements.Properties;
 import core.elements.coordinate.Coordinate;
+import core.elements.coordinate.CoordinateUtils;
 import core.elements.playground.Playground;
 import core.elements.rover.Rover;
 import core.exception.AppException;
-import core.exception.NoCoordinateFound;
-import core.manager.CollectionProvider;
+import core.exception.NoCoordinateFoundException;
+import core.factory.RoverFactory;
 import core.manager.GameManager;
-import core.manager.MovementProvider;
+import core.provider.CollectionListener;
+import core.provider.MovementListener;
 import core.utilities.CoreUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class CLIGameManager implements GameManager, MovementProvider, CollectionProvider {
+/**
+ * CLIGameManager provides functionality to write the application for the CLI App.
+ */
+public class CLIGameManager implements GameManager, MovementListener, CollectionListener {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CLIGameManager.class);
 
     private Playground playground;
-    private List<Rover> rovers;
-    private List<Coordinate> allotedCoordinates;
-    private Map<Coordinate, Properties> collectedProps;
+    private final List<Rover> rovers;
+    private final List<Coordinate> allotedCoordinates;
+    private final Map<Coordinate, Properties> collectedProps;
 
     public CLIGameManager() {
         rovers = new ArrayList<>();
@@ -32,7 +37,13 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
 
     @Override
     public GameStatus createGame(Playground playground, int roverCount) {
-        return null;
+        try {
+            throw new UnsupportedOperationException("createGame to Random Rovers upto roverCount is not " +
+                    "implemented.");
+        } catch (UnsupportedOperationException e) {
+            LOGGER.warn(e.getMessage(), e);
+            throw new AppException(e);
+        }
     }
 
     @Override
@@ -40,12 +51,16 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
         setPlayground(playground);
         for (Rover rover : rovers)
             this.rovers.add(rover);
-        return GameStatus.status(200, "Create game successful");
+        return GameStatus.createStatus(GameStatus.Code.OK, "Create game successful");
     }
 
     @Override
     public GameStatus addRovers(int roverCount) {
-        return null;
+        List<Rover> rovers = new ArrayList<>();
+        while (roverCount-- > 0) {
+            rovers.add(RoverFactory.createRover());
+        }
+        return addRovers(rovers);
     }
 
     @Override
@@ -57,62 +72,87 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
                 count++;
             }
         }
-        return GameStatus.status(200, "Added " + count + "rovers to the game");
+        return GameStatus.createStatus(GameStatus.Code.OK, "Added " + count + "rovers to the game");
+    }
+
+    @Override
+    public GameStatus addRoversOnCoordinates(List<Coordinate> coordinates) {
+        try {
+            throw new UnsupportedOperationException("addRoversOnCoordinates is not implemented.");
+        } catch (UnsupportedOperationException e) {
+            LOGGER.warn(e.getStackTrace().toString(), e);
+            throw new AppException(e);
+        }
     }
 
     @Override
     public GameStatus removeRovers(int roverCount) {
-        return null;
+        try {
+            throw new UnsupportedOperationException("removeRovers not implemented");
+        } catch (UnsupportedOperationException e) {
+            LOGGER.warn(e.getLocalizedMessage(), e);
+            throw new AppException(e);
+        }
     }
+
 
     @Override
     public GameStatus removeRovers(List<Rover> roverList) {
         int count = 0;
+        List<Rover> roversToBeRemoved = new ArrayList<>();
         for (Rover rover : roverList) {
             if (rovers.contains(rover)) {
-                rovers.remove(rover);
                 rover.stop();
+                roversToBeRemoved.add(rover);
                 count++;
             }
         }
-        return GameStatus.status(200, "Removed " + count + " rovers from the game");
+        roverList.removeAll(roversToBeRemoved);
+        return GameStatus.createStatus(GameStatus.Code.OK, "Removed " + count + " rovers from the game");
+    }
+
+    @Override
+    public GameStatus removeRoversFromCoordinates(List<Coordinate> coordinates) {
+        try {
+            throw new UnsupportedOperationException("removeRoversFromCoordinates is not implemented.");
+        } catch (UnsupportedOperationException e) {
+            LOGGER.warn(e.getMessage(), e);
+            throw new AppException(e);
+        }
     }
 
     @Override
     public GameStatus setPlayground(Playground playground) {
         CoreUtils.required("Playground", playground);
         this.playground = playground;
-        return GameStatus.status(200, "Game equipped with " + playground.toString());
+        return GameStatus.createStatus(GameStatus.Code.OK, "Game equipped with " + playground.toString());
     }
 
     @Override
-    public GameStatus removePlayground(Playground playground) {
-        return null;
+    public GameStatus removePlayground() {
+        this.playground = null;
+        return GameStatus.createStatus(GameStatus.Code.OK, "Playground removed from game");
     }
 
     @Override
     public GameStatus startGame() {
+        validatePlayground();
         validateRovers();
         for (Rover rover : rovers) {
             rover.setMovementProvider(this);
             rover.setCollectionProvider(this);
-            if (rover.getCurrentCoordinate() == null) {
+            if (!isValid(rover.getCoordinate())) {
                 rover.activate(getFirstNonVisitedCoordinate());
                 continue;
             } else {
-                if (!isValid(rover.getCurrentCoordinate())) {
-                    System.out.println(rover.toString() + " does not have valid set of coordinates. can not be " +
-                            "deployed");
-                }
-                rover.activate();
+                rover.activate(rover.getCoordinate());
             }
         }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return GameStatus.status(200, "All the rovers deployed successfully");
+        return GameStatus.createStatus(GameStatus.Code.OK, "All the rovers deployed successfully");
+    }
+
+    private void validatePlayground() {
+        CoreUtils.required("Playground", this.playground);
     }
 
     private void validateRovers() {
@@ -133,12 +173,12 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
         StringBuilder builder = new StringBuilder();
         for (Coordinate c : coordinates) {
             builder.append(collectedProps.containsKey(c) ?
-                    c.toString() + " visited " + collectedProps.get(c).get() + " \n" :
+                    c.toString() + " visited " + collectedProps.get(c).toString() + " \n" :
                     c.toString() +
                             " not " +
                             "visited \n");
         }
-        return GameStatus.status(200, builder.toString());
+        return GameStatus.createStatus(GameStatus.Code.OK, builder.toString());
     }
 
     private Coordinate getFirstNonVisitedCoordinate() {
@@ -148,7 +188,7 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
                 return c;
             }
         }
-        throw new NoCoordinateFound("no coordinates available");
+        throw new NoCoordinateFoundException("no coordinates available");
     }
 
     private boolean isAlloted(Coordinate coordinate) {
@@ -157,35 +197,39 @@ public class CLIGameManager implements GameManager, MovementProvider, Collection
 
 
     private boolean isInBounds(Coordinate coordinate) {
-        if (coordinate == null) return false;
         List<Coordinate> groundCoordinates = this.playground.getCoordinates();
         boolean res = groundCoordinates.contains(coordinate);
         return res;
     }
 
     private boolean isValid(Coordinate c) {
-        return isInBounds(c) && !isAlloted(c);
+        return !Objects.isNull(c) && isInBounds(c) && !isAlloted(c);
     }
 
     @Override
     public synchronized Coordinate nextMove(Coordinate coordinate) {
-        List<Coordinate> c = coordinate.nextPossibleCoordinates();
+        List<Coordinate> c = CoordinateUtils.nextPossibleCoordinates(coordinate, 1);
         for (Coordinate x : c) {
             if (isValid(x)) {
                 allotedCoordinates.add(x);
                 return x;
             }
         }
-        throw new NoCoordinateFound("Not a valid coordinate for next move " + coordinate.toString());
+        throw new NoCoordinateFoundException("Not a valid coordinate for next move " + coordinate.toString());
     }
 
     @Override
     public synchronized Coordinate nextMove(Coordinate coordinate, List<Coordinate> diffCoordinates) {
-        return null;
+        try {
+            throw new UnsupportedOperationException("nextMove is not implemented.");
+        } catch (UnsupportedOperationException e) {
+            LOGGER.warn(e.getMessage(), e);
+            throw new AppException(e);
+        }
     }
 
     @Override
-    public void collect(Coordinate c) {
+    public synchronized void collect(Coordinate c) {
         collectedProps.put(c, this.playground.getShapeAtCoordinate(c).getProperties());
     }
 

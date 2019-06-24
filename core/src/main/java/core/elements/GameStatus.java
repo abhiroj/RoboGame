@@ -1,34 +1,60 @@
 package core.elements;
 
+import core.utilities.CoreUtils;
+
 /**
  * supports different ways to present status of action done on the game
  */
-public interface GameStatus {
+//TODO:Add copyright
+public class GameStatus {
+
+    public enum Code {
+        OK(200);
+
+        private final int code;
+
+        Code(int i) {
+            this.code = i;
+        }
+    }
+
+    private final Code code;
+    private final String message;
+
+    private GameStatus(Code code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 
     /**
      * get status of the operation
+     *
      * @return
      */
-    int getCode();
+    public Code getCode() {
+        return code;
+    }
 
     /**
      * get message from the operation
+     *
      * @return
      */
-    Object getMessage();
+    public String getMessage() {
+        return message;
+    }
 
-    static GameStatus status(int code, Object message) {
-        return new GameStatus() {
-            @Override
-            public int getCode() {
-                return code;
-            }
-
-            @Override
-            public Object getMessage() {
-                return message;
-            }
-        };
+    /**
+     * static factory to provide a game status.
+     *
+     * @param code
+     * @param message
+     * @return
+     */
+    public static GameStatus createStatus(Code code, String message) {
+        CoreUtils.required("Status Code", code);
+        CoreUtils.required("Status Message", message);
+        return new GameStatus(code, message);
     }
 
 }
