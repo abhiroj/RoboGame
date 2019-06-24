@@ -1,9 +1,9 @@
 package core.consumer;
 
-import core.provider.MovementProvider;
+import core.provider.MovementListener;
 
 /**
- * MovementConsumer accepts MovementProvider to consume those set of operations
+ * MovementConsumer accepts MovementListener to consume those set of operations
  */
 public interface MovementConsumer {
 
@@ -14,6 +14,6 @@ public interface MovementConsumer {
      *
      * @param movementProvider
      */
-    void setMovementProvider(MovementProvider movementProvider);
+    void setMovementProvider(MovementListener movementProvider);
 
 }

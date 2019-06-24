@@ -5,8 +5,8 @@ import core.elements.coordinate.Coordinate;
 import core.elements.coordinate.CoordinateImpl;
 import core.exception.AppException;
 import core.exception.NoCoordinateFoundException;
-import core.provider.CollectionProvider;
-import core.provider.MovementProvider;
+import core.provider.CollectionListener;
+import core.provider.MovementListener;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,10 +29,10 @@ public class RoverImplTest {
     private final int TEST_ROVER_ID = 12;
 
     @Mock
-    private CollectionProvider collectionProvider;
+    private CollectionListener collectionProvider;
 
     @Mock
-    private MovementProvider movementProvider;
+    private MovementListener movementProvider;
 
     private Coordinate coordinate;
 

@@ -1,9 +1,9 @@
 package core.consumer;
 
-import core.provider.CollectionProvider;
+import core.provider.CollectionListener;
 
 /**
- * CollectionConsumer accept CollectionProvider to consume those set of operations.
+ * CollectionConsumer accept CollectionListener to consume those set of operations.
  */
 public interface CollectionConsumer {
 
@@ -15,6 +15,6 @@ public interface CollectionConsumer {
      *
      * @param collectionProvider
      */
-    void setCollectionProvider(CollectionProvider collectionProvider);
+    void setCollectionProvider(CollectionListener collectionProvider);
 
 }

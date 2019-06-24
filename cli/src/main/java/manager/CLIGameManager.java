@@ -9,8 +9,8 @@ import core.exception.AppException;
 import core.exception.NoCoordinateFoundException;
 import core.factory.RoverFactory;
 import core.manager.GameManager;
-import core.provider.CollectionProvider;
-import core.provider.MovementProvider;
+import core.provider.CollectionListener;
+import core.provider.MovementListener;
 import core.utilities.CoreUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ import java.util.*;
 /**
  * CLIGameManager provides functionality to write the application for the CLI App.
  */
-public class CLIGameManager implements GameManager, MovementProvider, CollectionProvider {
+public class CLIGameManager implements GameManager, MovementListener, CollectionListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CLIGameManager.class);
 

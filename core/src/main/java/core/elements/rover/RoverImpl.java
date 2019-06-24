@@ -4,8 +4,8 @@ import core.consumer.CollectionConsumer;
 import core.consumer.MovementConsumer;
 import core.elements.coordinate.Coordinate;
 import core.exception.NoCoordinateFoundException;
-import core.provider.CollectionProvider;
-import core.provider.MovementProvider;
+import core.provider.CollectionListener;
+import core.provider.MovementListener;
 import core.utilities.CoreUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +21,9 @@ public class RoverImpl implements Runnable, Rover, MovementConsumer, CollectionC
     private Coordinate coordinate;
     private final int id;
     private boolean shouldRun = false;
-    private MovementProvider controller;
+    private MovementListener controller;
     private boolean isActive = false;
-    private CollectionProvider collector;
+    private CollectionListener collector;
 
     public RoverImpl(int id) {
         this.id = id;
@@ -117,7 +117,7 @@ public class RoverImpl implements Runnable, Rover, MovementConsumer, CollectionC
      *
      * @param movementProvider
      */
-    public void setMovementProvider(MovementProvider movementProvider) {
+    public void setMovementProvider(MovementListener movementProvider) {
         this.controller = movementProvider;
     }
 
@@ -126,7 +126,7 @@ public class RoverImpl implements Runnable, Rover, MovementConsumer, CollectionC
      *
      * @param collectionProvider
      */
-    public void setCollectionProvider(CollectionProvider collectionProvider) {
+    public void setCollectionProvider(CollectionListener collectionProvider) {
         this.collector = collectionProvider;
     }
 
