@@ -12,7 +12,7 @@
   2. Robo once placed successfully can start navigating in the grid, according to the direction specified by the actor.
       * If not getting placed successfully, inspect board or try again.
   3. Robo should not visit a grid-cell once it has been visited by other robos.
-  4. Robo can choose to get the item from the square and put it in an collection repository.
+  4. Robo can choose to get the item from the shape and put it in an collection repository.
 
 API Contract for REST Service - 
 
