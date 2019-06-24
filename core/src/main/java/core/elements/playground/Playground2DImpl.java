@@ -1,7 +1,7 @@
 package core.elements.playground;
 
 import core.elements.coordinate.Coordinate;
-import core.elements.shape.Shape;
+import core.elements.shape.SandboxShape;
 import core.exception.AppException;
 import core.utilities.CoreUtils;
 
@@ -13,17 +13,17 @@ import java.util.List;
  */
 public class Playground2DImpl implements Playground {
 
-    private final Shape[][] shape2D;
+    private final SandboxShape[][] shape2D;
 
-    public Playground2DImpl(Shape[][] shape2D) {
+    public Playground2DImpl(SandboxShape[][] shape2D) {
         this.shape2D = shape2D;
     }
 
     @Override
     public List<Coordinate> getCoordinates() {
         List<Coordinate> coordinates = new ArrayList<>();
-        for (Shape[] row : shape2D) {
-            for (Shape s : row) {
+        for (SandboxShape[] row : shape2D) {
+            for (SandboxShape s : row) {
                 coordinates.add(s.getCoordinate());
             }
         }
@@ -31,14 +31,14 @@ public class Playground2DImpl implements Playground {
     }
 
     @Override
-    public Shape getShapeAtCoordinate(Coordinate c) {
+    public SandboxShape getShapeAtCoordinate(Coordinate c) {
         CoreUtils.required("Coordinate", c);
-        for (Shape[] row : shape2D) {
-            for (Shape col : row) {
+        for (SandboxShape[] row : shape2D) {
+            for (SandboxShape col : row) {
                 if (col.getCoordinate().equals(c))
                     return col;
             }
         }
-        throw new AppException("Shape does not exist at" + c.toString());
+        throw new AppException("SandboxShape does not exist at" + c.toString());
     }
 }

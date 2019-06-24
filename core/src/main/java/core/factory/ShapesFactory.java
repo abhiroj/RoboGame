@@ -2,7 +2,7 @@ package core.factory;
 
 import core.elements.coordinate.AxisType;
 import core.elements.coordinate.CoordinateImpl;
-import core.elements.shape.Shape;
+import core.elements.shape.SandboxShape;
 import core.elements.shape.ShapeImpl;
 
 import java.util.Map;
@@ -22,8 +22,8 @@ public class ShapesFactory {
      * @param columns
      * @return
      */
-    public static Shape[][] getArrayRepresentation(int rows, int columns) {
-        Shape[][] shape2D = new ShapeImpl[rows][columns];
+    public static SandboxShape[][] getArrayRepresentation(int rows, int columns) {
+        SandboxShape[][] shape2D = new ShapeImpl[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 Map<AxisType, Integer> treeMap = new TreeMap<>();

@@ -2,7 +2,7 @@ package core.elements.playground;
 
 import core.elements.coordinate.Coordinate;
 import core.elements.coordinate.CoordinateImpl;
-import core.elements.shape.Shape;
+import core.elements.shape.SandboxShape;
 import core.exception.AppException;
 import core.factory.PlaygroundFactory;
 import core.factory.ShapesFactory;
@@ -25,7 +25,7 @@ public class Playground2DImplTest {
     private final int ROW_COUNT = 3;
     private final int COL_COUNT = 3;
 
-    private final Shape[][] shapes = ShapesFactory.getArrayRepresentation(ROW_COUNT, COL_COUNT);
+    private final SandboxShape[][] shapes = ShapesFactory.getArrayRepresentation(ROW_COUNT, COL_COUNT);
     private Playground playground2D;
 
     @Before

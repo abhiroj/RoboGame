@@ -8,9 +8,9 @@ import java.util.Properties;
 //TODO:Add copyright
 
 /**
- * A basic implementation of shape class
+ * A basic implementation of shape class providing features from sandbox
  */
-public class ShapeImpl implements Shape {
+public class ShapeImpl implements SandboxShape {
 
     private Properties properties;
     private final Coordinate coordinate;

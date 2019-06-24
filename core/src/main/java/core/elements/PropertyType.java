@@ -1,7 +1,10 @@
 package core.elements;
 
 /**
- * Properties supported by the game
+ * Properties supported by the game.
+ * <p>
+ * Support provided for -
+ * Weather, Humidity and UV Rad.
  */
 //TODO:Add copyright
 public enum PropertyType {

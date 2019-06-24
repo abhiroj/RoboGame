@@ -1,7 +1,7 @@
 package core.elements.playground;
 
 import core.elements.coordinate.Coordinate;
-import core.elements.shape.Shape;
+import core.elements.shape.SandboxShape;
 
 import java.util.List;
 
@@ -18,11 +18,11 @@ public interface Playground {
     List<Coordinate> getCoordinates();
 
     /**
-     * get Shape present at the coordinate
+     * get SandboxShape present at the coordinate
      *
      * @param c
      * @return
      */
-    Shape getShapeAtCoordinate(Coordinate c);
+    SandboxShape getShapeAtCoordinate(Coordinate c);
 
 }
