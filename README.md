@@ -2,6 +2,9 @@
 <a href="https://codecov.io/gh/abhiroj/RoboGame">
   <img src="https://codecov.io/gh/abhiroj/RoboGame/branch/abstract-robo/graph/badge.svg" />
 </a>
+<a href="https://travis-ci.org/abhiroj/RoboGame">
+  <img src="https://travis-ci.org/abhiroj/RoboGame.svg?branch=abstract-robo"/>
+</a>
 <hr/>
 <h3>Use Case -</h3>
 
