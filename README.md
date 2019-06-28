@@ -5,6 +5,7 @@
 <a href="https://travis-ci.org/abhiroj/RoboGame">
   <img src="https://travis-ci.org/abhiroj/RoboGame.svg?branch=master"/>
 </a>
+<a href="https://codeclimate.com/github/abhiroj/RoboGame/maintainability"><img src="https://api.codeclimate.com/v1/badges/e03c6349b888da023a65/maintainability" /></a>
 <hr/>
 <h3>Use Case -</h3>
   1. Actor can put any number of robos on 2D Grid.
